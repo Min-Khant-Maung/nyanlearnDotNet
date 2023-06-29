@@ -1,0 +1,68 @@
+<div class="content-wrapper">
+    <div class="teacherForm">
+        <h1>Teacher Registration Form</h1>
+        <form action="/Admin/AddInstructor" method="POST">
+
+
+            <div class="mb-3 teacher-inputs">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-control" name="Name" placeholder="Teacher Name" required>
+            </div>
+
+            <div class="mb-3 teacher-inputs">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" name="Email" placeholder="Teacher Email">
+            </div>
+
+            <div class="mb-3 teacher-inputs">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-control" name="Password" placeholder="Teacher Password">
+            </div>
+
+            <div class="mb-3 teacher-inputs">
+                <label class="form-label">DOB</label>
+                <input type="date" class="form-control" name="DOB" required>
+            </div>
+
+            <div class="mb-3 teacher-inputs">
+                <label class="form-label">Father Name</label>
+                <input type="text" class="form-control" name="FatherName" required>
+            </div>
+
+            <div class="mb-3 teacher-inputs">
+                <label class="form-label">National Register of Citizens(NRC)</label>
+                <input type="text" class="form-control" name="NRC" placeholder="Teacher NRC" required>
+            </div>
+
+            <div class="mb-3 teacher-inputs">
+                <label class="form-label">Position</label>
+                <select class="form-control" name="Position">
+                    <option>Senior</option>
+                    <option>Junior</option>
+                </select>
+            </div>
+
+            <div class="mb-3 teacher-inputs">
+                <label class="form-label">Address</label>
+                <textarea name="Address" class="form-control"></textarea>
+            </div>
+
+            <div class="mb-3 teacher-inputs">
+                <label class="form-label">Phone</label>
+                <input type="text" class="form-control" name="Phone" placeholder="Teacher Phone" required>
+            </div>
+
+
+            <div class="mb-3 teacher-inputs">
+                <div class="row">
+                    <div class="col">
+                        <input type="submit" class="btn btn-success" value="Entry" />
+                    </div>
+                    <div class="col">
+                        <input type="reset" class="btn btn-secondary" value="Cancel" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -6,7 +6,6 @@ C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\bin\Debug\
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\bin\Debug\net5.0\nyanlearnDotNet.runtimeconfig.json
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\bin\Debug\net5.0\nyanlearnDotNet.runtimeconfig.dev.json
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\bin\Debug\net5.0\nyanlearnDotNet.dll
-C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\bin\Debug\net5.0\ref\nyanlearnDotNet.dll
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\bin\Debug\net5.0\nyanlearnDotNet.pdb
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\bin\Debug\net5.0\nyanlearnDotNet.Views.dll
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\bin\Debug\net5.0\nyanlearnDotNet.Views.pdb
@@ -147,7 +146,6 @@ C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\nyanlearnDotNet.TagHelpers.output.cache
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\nyanlearnDotNet.RazorCoreGenerate.cache
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Home\Index.cshtml.g.cs
-C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Home\Privacy.cshtml.g.cs
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Shared\Error.cshtml.g.cs
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Shared\_Layout.cshtml.g.cs
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Shared\_ValidationScriptsPartial.cshtml.g.cs
@@ -175,3 +173,16 @@ C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Areas\Identity\Pages\_ViewImports.cshtml.g.cs
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Areas\Identity\Pages\_ViewStart.cshtml.g.cs
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Shared\_LoginPartial.cshtml.g.cs
+C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Admin\Index.cshtml.g.cs
+C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Shared\_LayoutAdmin.cshtml.g.cs
+C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Admin\InstructorList.cshtml.g.cs
+C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Admin\InstructorRegForm.cshtml.g.cs
+C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Admin\StudentList.cshtml.g.cs
+C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Admin\StudentRegForm.cshtml.g.cs
+C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Shared\_LayoutInstructor.cshtml.g.cs
+C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Instructor\Index.cshtml.g.cs
+C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Instructor\UploadSuccess.cshtml.g.cs
+C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Instructor\AddCourse.cshtml.g.cs
+C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Instructor\ListCourses.cshtml.g.cs
+C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Home\PublicRegister.cshtml.g.cs
+C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\bin\Debug\net5.0\ref\nyanlearnDotNet.dll

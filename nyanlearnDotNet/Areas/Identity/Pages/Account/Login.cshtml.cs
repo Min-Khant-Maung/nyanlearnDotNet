@@ -73,15 +73,23 @@ namespace nyanlearnDotNet.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");
 
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            returnUrl ??= Url.Content("~/");
         
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                var identityuser = await _userManager.FindByEmailAsync(Input.Email);
+                if(identityuser!=null)
+                {
+                    var passwordCheck = await _userManager.CheckPasswordAsync(identityuser, "mrkyaing123456");
+                    if(passwordCheck)
+                    {
+                        _logger.LogInformation("Password Correct");
+                    }
+                }
+                var result =  _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false).Result;
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");

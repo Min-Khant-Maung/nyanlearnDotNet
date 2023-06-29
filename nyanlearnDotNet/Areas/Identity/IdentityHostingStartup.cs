@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using nyanlearn.Models.DAO;
+using nyanlearnDotNet.Models.DAO;
 
 [assembly: HostingStartup(typeof(nyanlearnDotNet.Areas.Identity.IdentityHostingStartup))]
 namespace nyanlearnDotNet.Areas.Identity

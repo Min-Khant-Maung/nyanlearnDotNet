@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 
-namespace nyanlearn.Models
+namespace nyanlearnDotNet.Models
 {
     [Table("Student")]
     public class Student : BaseEntity
     {
-        public string Code { get; set; }
         public string Name { get; set; }
         public string Password { get; set; }
         public DateTime DOB { get; set; }
@@ -21,9 +20,16 @@ namespace nyanlearn.Models
         public string Phone { get; set; }
         public string FatherName { get; set; }
 
+        public bool IsApproved { get; set; }
 
         public string UserId { get; set; }
         [ForeignKey("UserId")]
         public virtual IdentityUser User { get; set; }
+
+        public Student()
+        {
+            IsApproved = false;
+        }
+
     }
 }

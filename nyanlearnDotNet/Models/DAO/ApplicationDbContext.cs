@@ -6,17 +6,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace nyanlearn.Models.DAO
+namespace nyanlearnDotNet.Models.DAO
 {
     public class ApplicationDbContext : IdentityDbContext<IdentityUser, IdentityRole, string>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) {
+        }
 
         public DbSet<Student> Students { get; set; }
-        public DbSet<Teacher> Teachers { get; set; }
+        public DbSet<Instructor> Instructors { get; set; }
         public DbSet<Course> Courses { get; set; }
+        public DbSet<CourseInstructor> CourseInstructors { get; set; }
+        public DbSet<Region> Regions { get; set; }
 
-        public DbSet<TeacherCourses> TeacherCourses { get; set; }
+
+        public DbSet<City> Cities { get; set; }
+
+        public DbSet<InstructorCourses> InstructorCourses { get; set; }
+
+
+  
 
     }
 }

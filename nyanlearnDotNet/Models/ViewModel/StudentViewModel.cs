@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 
-namespace nyanlearn.Models
+namespace nyanlearnDotNet.Models.ViewModel
 {
     public class StudentViewModel : BaseEntity
     {
-        public string Code { get; set; }
         public string Name { get; set; }
         public string Password { get; set; }
         public string Position { get; set; }

@@ -1,14 +1,17 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using nyanlearn.Models;
-using nyanlearn.Models.DAO;
+using nyanlearnDotNet.Models;
+using nyanlearnDotNet.Models.DAO;
+using nyanlearnDotNet.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace nyanlearn.Controllers
+namespace nyanlearnDotNet.Controllers
 {
+    // [Authorize]
     public class AdminController : Controller
     {
 
@@ -26,70 +29,70 @@ namespace nyanlearn.Controllers
         }
 
 
-        public IActionResult ListStudents()
+        // public IActionResult ListStudents()
+        // {
+        //     IList<StudentViewModel> stus = _applicationDbContext.Students.Select
+        //         (s => new StudentViewModel
+        //         {
+        //             Code = s.Code,
+        //             Name = s.Name,
+        //             DOB = s.DOB,
+        //             Email = s.Email,
+        //             NRC = s.NRC,
+        //             Address = s.Address,
+        //             Phone = s.Phone,
+        //             FatherName = s.FatherName
+        //         }).ToList();
+
+
+        //     return View("~/Views/Admin/StudentList.cshtml", stus);
+        // }
+
+        // public IActionResult AddStudent()
+        // {
+        //     return View("~/Views/Admin/StudentRegForm.cshtml");
+        // }
+
+
+        // [HttpPost]
+        // public async Task<IActionResult> AddStudent(StudentViewModel studentviewmodel)
+        // {
+        //     var user = new IdentityUser { UserName = studentviewmodel.Name, Email = studentviewmodel.Email };
+        //     var result = await _usermanager.CreateAsync(user, studentviewmodel.Password);
+        //     if (result.Succeeded)
+        //     {
+        //         await _usermanager.AddToRoleAsync(user, "student");
+        //     }
+        //     Student student = new Student();
+        //     //audit columns
+        //     student.Id = Guid.NewGuid().ToString();
+        //     student.CreatedDate = DateTime.Now;
+        //     student.Code = studentviewmodel.Code;
+        //     student.Name = studentviewmodel.Name;
+        //     student.Email = studentviewmodel.Email;
+        //     student.Password = "";
+        //     student.Phone = studentviewmodel.Phone;
+        //     student.Address = studentviewmodel.Address;
+        //     student.NRC = studentviewmodel.NRC;
+        //     student.DOB = studentviewmodel.DOB;
+        //     student.FatherName = studentviewmodel.FatherName;
+        //     student.UserId = user.Id;//for identity user
+        //     _applicationDbContext.Students.Add(student);//Adding the record Students DBSet
+        //     _applicationDbContext.SaveChanges();//saving the record to the database
+
+
+
+
+        //     return RedirectToAction("ListStudents");
+        // }
+
+
+
+        // [Authorize(Roles = "Admin")]
+        public IActionResult ListInstructors()
         {
-            IList<StudentViewModel> stus = _applicationDbContext.Students.Select
-                (s => new StudentViewModel
-                {
-                    Code = s.Code,
-                    Name = s.Name,
-                    DOB = s.DOB,
-                    Email = s.Email,
-                    NRC = s.NRC,
-                    Address = s.Address,
-                    Phone = s.Phone,
-                    FatherName = s.FatherName
-                }).ToList();
-
-
-            return View("~/Views/Admin/StudentList.cshtml", stus);
-        }
-
-        public IActionResult AddStudent()
-        {
-            return View("~/Views/Admin/StudentRegForm.cshtml");
-        }
-
-
-        [HttpPost]
-        public async Task<IActionResult> AddStudent(StudentViewModel studentviewmodel)
-        {
-            var user = new IdentityUser { UserName = studentviewmodel.Name, Email = studentviewmodel.Email };
-            var result = await _usermanager.CreateAsync(user, studentviewmodel.Password);
-            if (result.Succeeded)
-            {
-                await _usermanager.AddToRoleAsync(user, "student");
-            }
-            Student student = new Student();
-            //audit columns
-            student.Id = Guid.NewGuid().ToString();
-            student.CreatedDate = DateTime.Now;
-            student.Code = studentviewmodel.Code;
-            student.Name = studentviewmodel.Name;
-            student.Email = studentviewmodel.Email;
-            student.Password = "";
-            student.Phone = studentviewmodel.Phone;
-            student.Address = studentviewmodel.Address;
-            student.NRC = studentviewmodel.NRC;
-            student.DOB = studentviewmodel.DOB;
-            student.FatherName = studentviewmodel.FatherName;
-            student.UserId = user.Id;//for identity user
-            _applicationDbContext.Students.Add(student);//Adding the record Students DBSet
-            _applicationDbContext.SaveChanges();//saving the record to the database
-
-
-
-
-            return RedirectToAction("ListStudents");
-        }
-
-
-
-
-        public IActionResult ListTeachers()
-        {
-            IList<TeacherViewModel> teachers = _applicationDbContext.Teachers.Select
-                (t => new TeacherViewModel
+            IList<InstructorViewModel> instructors = _applicationDbContext.Instructors.Select
+                (t => new InstructorViewModel
                 {
                     Name = t.Name,
                     Email = t.Email,
@@ -103,42 +106,46 @@ namespace nyanlearn.Controllers
 
 
 
-            return View("~/Views/Admin/TeacherList.cshtml", teachers);
+            return View("~/Views/Admin/InstructorList.cshtml", instructors);
         }
 
 
-
-        public IActionResult AddTeacher()
+        // [Authorize(Roles = "Admin")]
+        public IActionResult AddInstructor()
         {
-            return View("~/Views/Admin/TeacherRegForm.cshtml");
+            return View("~/Views/Admin/InstructorRegForm.cshtml");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<IActionResult> AddTeacher(TeacherViewModel teacherviewmodel)
+        public async Task<IActionResult> AddInstructor(InstructorViewModel instructorviewmodel)
         {
-            var user = new IdentityUser { UserName = teacherviewmodel.Name, Email = teacherviewmodel.Email };
-            var result = await _usermanager.CreateAsync(user, teacherviewmodel.Password);
+            var user = new IdentityUser { UserName = instructorviewmodel.Email, Email = instructorviewmodel.Email };
+            var result = await _usermanager.CreateAsync(user, instructorviewmodel.Password);
             if (result.Succeeded)
             {
-                await _usermanager.AddToRoleAsync(user, "teacher");
+                await _usermanager.AddToRoleAsync(user, "instructor");
             }
-            Teacher teacher = new Teacher();
+
+
+            
+            Instructor instructor = new Instructor();
             //audit columns
-            teacher.Id = Guid.NewGuid().ToString();
-            teacher.CreatedDate = DateTime.Now;
-            teacher.Name = teacherviewmodel.Name;
-            teacher.Email = teacherviewmodel.Email;
-            teacher.Password = "";
-            teacher.Phone = teacherviewmodel.Phone;
-            teacher.Position = teacherviewmodel.Position;
-            teacher.Address = teacherviewmodel.Address;
-            teacher.NRC = teacherviewmodel.NRC;
-            teacher.DOB = teacherviewmodel.DOB;
-            teacher.FatherName = teacherviewmodel.FatherName;
-            teacher.UserId = user.Id;//for identity user
-            _applicationDbContext.Teachers.Add(teacher);//Adding the record Students DBSet
+            instructor.Id = Guid.NewGuid().ToString();
+            instructor.CreatedDate = DateTime.Now;
+            instructor.Name = instructorviewmodel.Name;
+            instructor.Email = instructorviewmodel.Email;
+            instructor.Password = instructorviewmodel.Password;
+            instructor.Phone = instructorviewmodel.Phone;
+            instructor.Position = instructorviewmodel.Position;
+            instructor.Address = instructorviewmodel.Address;
+            instructor.NRC = instructorviewmodel.NRC;
+            instructor.DOB = instructorviewmodel.DOB;
+            instructor.FatherName = instructorviewmodel.FatherName;
+            instructor.UserId = user.Id;//for identity user
+            _applicationDbContext.Instructors.Add(instructor);//Adding the record Students DBSet
             _applicationDbContext.SaveChanges();//saving the record to the database
-            return RedirectToAction("ListTeachers");
+            return RedirectToAction("ListInstructors");
         }
 
     }
