@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace nyanlearnDotNet.Migrations
 {
-    public partial class updatestudentModel : Migration
+    public partial class addedlessoncourselessons : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -44,6 +44,37 @@ namespace nyanlearnDotNet.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Lesson",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Lesson", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Nrc",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    name_en = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    name_mm = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    nrc_code = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Nrc", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -295,6 +326,57 @@ namespace nyanlearnDotNet.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CourseLesson",
+                columns: table => new
+                {
+                    CoursesId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LessonsId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CourseLesson", x => new { x.CoursesId, x.LessonsId });
+                    table.ForeignKey(
+                        name: "FK_CourseLesson_Course_CoursesId",
+                        column: x => x.CoursesId,
+                        principalTable: "Course",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CourseLesson_Lesson_LessonsId",
+                        column: x => x.LessonsId,
+                        principalTable: "Lesson",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CourseLessons",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CourseId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    LessonId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CourseLessons", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CourseLessons_Course_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Course",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_CourseLessons_Lesson_LessonId",
+                        column: x => x.LessonId,
+                        principalTable: "Lesson",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "InstructorCourse",
                 columns: table => new
                 {
@@ -381,6 +463,21 @@ namespace nyanlearnDotNet.Migrations
                 column: "InstructorId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CourseLesson_LessonsId",
+                table: "CourseLesson",
+                column: "LessonsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CourseLessons_CourseId",
+                table: "CourseLessons",
+                column: "CourseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CourseLessons_LessonId",
+                table: "CourseLessons",
+                column: "LessonId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Instructor_UserId",
                 table: "Instructor",
                 column: "UserId");
@@ -425,7 +522,16 @@ namespace nyanlearnDotNet.Migrations
                 name: "CourseInstructor");
 
             migrationBuilder.DropTable(
+                name: "CourseLesson");
+
+            migrationBuilder.DropTable(
+                name: "CourseLessons");
+
+            migrationBuilder.DropTable(
                 name: "InstructorCourse");
+
+            migrationBuilder.DropTable(
+                name: "Nrc");
 
             migrationBuilder.DropTable(
                 name: "Student");
@@ -435,6 +541,9 @@ namespace nyanlearnDotNet.Migrations
 
             migrationBuilder.DropTable(
                 name: "Region");
+
+            migrationBuilder.DropTable(
+                name: "Lesson");
 
             migrationBuilder.DropTable(
                 name: "Course");

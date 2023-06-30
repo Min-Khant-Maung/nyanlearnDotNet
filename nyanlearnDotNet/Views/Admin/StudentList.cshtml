@@ -1,5 +1,43 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿<div class="content-wrapper">
+    @model IList<StudentViewModel>
+
+    <h1>Student List</h1>
+
+    @*<a href="/Teacher/Entry" class="btn btn-info" role="button">Create</a>*@
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Name</td>
+                <td>Email</td>
+                <td>Father Name</td>
+                <td>NRC</td>
+                <td>DOB</td>
+                <td>Address</td>
+                <td>Phone</td>
+                <td>IsApproved</td>
+
+
+                <td>Action</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var t in Model)
+            {
+            <tr>
+                <td>@t.Name</td>
+                <td>@t.Email</td>
+                <td>@t.FatherName</td>
+                <td>@t.NRC</td>
+                <td>@t.DOB.ToString("yyyy-MM--dd")</td>
+                <td>@t.Address</td>
+                <td>@t.Phone</td>
+                <td>@t.IsApproved</td>
+
+                <td><a href="/Admin/Edit?Id=@t.Id" class="btn btn-success" role="button">Edit</a></td>
+                <td><a href="/Admin/Delete?Id=@t.Id" class="btn btn-danger" onclick="return confirm('Are you sure to delete this record?')">Delete</a></td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

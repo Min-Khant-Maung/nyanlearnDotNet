@@ -40,6 +40,7 @@
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.17",
           "Microsoft.EntityFrameworkCore.Tools": "5.0.17",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "5.0.2",
+          "Newtonsoft.Json": "11.0.2",
           "System.CodeDom": "5.0.0",
           "System.Data.SqlClient": "4.8.5",
           "System.Drawing.Common": "5.0.0",

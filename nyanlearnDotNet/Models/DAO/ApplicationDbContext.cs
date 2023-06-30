@@ -22,10 +22,15 @@ namespace nyanlearnDotNet.Models.DAO
 
         public DbSet<City> Cities { get; set; }
 
+        public DbSet<Lesson> Lessons { get; set; }
+
+        public DbSet<CourseLessons> CourseLessons { get; set; }
+
         public DbSet<InstructorCourses> InstructorCourses { get; set; }
+        public DbSet<NRC> NRCs { get; set; }
 
 
-  
+
 
     }
 }

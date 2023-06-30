@@ -12,11 +12,12 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace nyanlearnDotNet.Controllers
 {
 
-    // [Authorize]
+    [Authorize]
     public class InstructorController : Controller
     {
 
@@ -25,6 +26,9 @@ namespace nyanlearnDotNet.Controllers
         private readonly ApplicationDbContext _applicationDbContext;
         private readonly UserManager<IdentityUser> _usermanager;
 
+        private  string CurrentUserId;
+        private  string CurrentInstructorId;
+
         public InstructorController(IWebHostEnvironment webHostEnvironment,ILogger<InstructorController>logger, ApplicationDbContext applicationDbContext, UserManager<IdentityUser> userManager)
         {
                 _applicationDbContext = applicationDbContext;
@@ -32,23 +36,37 @@ namespace nyanlearnDotNet.Controllers
                 _webHostEnvironment = webHostEnvironment;
                 _logger = logger;
         }
+
+
+
+
+
+        [Authorize(Roles = "instructor")]
         public IActionResult Index()
         {
             return View("~/Views/Instructor/Index.cshtml");
         }
 
+
+
+[Authorize(Roles = "instructor")]
         public IActionResult AddCourse()
         {
             return View("~/Views/Instructor/AddCourse.cshtml");
         }
         
+
+        [Authorize(Roles = "instructor")]
         public IActionResult ListCourses()
         {
+
+                        CurrentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
+                var instructor = _applicationDbContext.Instructors.FirstOrDefault(i => i.UserId == CurrentUserId);
+                CurrentInstructorId = instructor.Id;
         IList<String> courseIds=null;
         IList<CourseViewModel> courses=null;
-        var instructorId =  "9ffdc27f-2325-43e5-8c28-29801d54cdca";
             courseIds = _applicationDbContext.CourseInstructors
-                        .Where(ci => ci.InstructorId == instructorId)
+                        .Where(ci => ci.InstructorId == CurrentInstructorId)
                         .Select(ci => ci.CourseId)
                         .ToList();
 
@@ -69,9 +87,16 @@ namespace nyanlearnDotNet.Controllers
         }
 
 
+
+
+[Authorize(Roles = "instructor")]
         [HttpPost]
         public IActionResult AddCourse(CourseViewModel courseViewModel)
         {
+
+                            CurrentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
+                var instructor = _applicationDbContext.Instructors.FirstOrDefault(i => i.UserId == CurrentUserId);
+                CurrentInstructorId = instructor.Id;
             Course course = new Course();
             //audit columns
             var generatedCourseId = Guid.NewGuid().ToString();
@@ -87,7 +112,7 @@ namespace nyanlearnDotNet.Controllers
             courseInstructor.CreatedDate = DateTime.Now;
 
             // hard code for instructor( mr kyaing )
-            courseInstructor.InstructorId = "9ffdc27f-2325-43e5-8c28-29801d54cdca";
+            courseInstructor.InstructorId = CurrentInstructorId;
 
             //Adding the record Students DBSet
             _applicationDbContext.Courses.Add(course);

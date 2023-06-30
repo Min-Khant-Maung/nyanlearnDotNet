@@ -1,4 +1,8 @@
+@model IList<NRCViewModel>
 <div class="content-wrapper">
+    @{
+        string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(Model);
+    }
     <div class="teacherForm">
         <h1>Teacher Registration Form</h1>
         <form action="/Admin/AddInstructor" method="POST">
@@ -42,6 +46,23 @@
                 </select>
             </div>
 
+            <div id="address_form">
+
+                <div class="teacher-inputs">
+                    <label class="form-label">NRC Code</label>
+                    <select class="form-control" name="nrc_code" id="nrc_code_dd">
+                    </select>
+                </div>
+
+
+                <div class="teacher-inputs">
+                    <label class="form-label">Name(EN)</label>
+                    <select class="form-control" name="name_en" id="name_en_dd">
+                    </select>
+                </div>
+
+            </div>
+
             <div class="mb-3 teacher-inputs">
                 <label class="form-label">Address</label>
                 <textarea name="Address" class="form-control"></textarea>
@@ -66,3 +87,29 @@
         </form>
     </div>
 </div>
+<script>
+    var data = @Html.Raw(jsonData);
+
+    let nrc_code_dd = document.getElementById("nrc_code_dd");
+    let name_en_dd = document.getElementById("name_en_dd");
+    nrc_code_dd.innerHTML = "<option></option>";
+    for (let i = 1; i <= 14; i++) {
+        nrc_code_dd.innerHTML += `<option value="${i}">${i}</option>`;
+    }
+
+
+    nrc_code_dd.addEventListener("change", (event) => {
+        clickedNRCode(event.target.value);
+    });
+
+
+    function clickedNRCode(code) {
+        name_en_dd.innerHTML = "";
+        let temp = data.filter((d) => d.nrc_code === parseInt(code)).sort();
+        console.log(temp);
+        for (let i = 0; i < temp.length; i++) {
+            name_en_dd.innerHTML += `<option value="${temp[i].name_en}">${temp[i].name_en}</option>`;
+        }
+
+    }
+</script>
