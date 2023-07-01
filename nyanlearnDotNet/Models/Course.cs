@@ -12,6 +12,9 @@ namespace nyanlearnDotNet.Models
     {
         public string Name { get; set; }
         public string Description { get; set; }
+        public string InstructorId { get; set; }
+        [ForeignKey("InstructorId")]
+        public virtual Instructor Instructor { get; set; }
         public virtual IList<Lesson> Lessons { get; set; }
     }
 }

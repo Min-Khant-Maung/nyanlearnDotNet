@@ -41,7 +41,7 @@ namespace nyanlearnDotNet.Controllers
 
 
 
-        [Authorize(Roles = "instructor")]
+         [Authorize(Roles = "instructor")]
         public IActionResult Index()
         {
             return View("~/Views/Instructor/Index.cshtml");
@@ -49,10 +49,18 @@ namespace nyanlearnDotNet.Controllers
 
 
 
-[Authorize(Roles = "instructor")]
+         [Authorize(Roles = "instructor")]
         public IActionResult AddCourse()
         {
             return View("~/Views/Instructor/AddCourse.cshtml");
+        }
+
+        // We need to fix this action to filter the courses by only current instructor.
+        [Authorize(Roles = "instructor")]
+        public IActionResult AddLesson()
+        {
+            IList<Course> courses = _applicationDbContext.Courses.ToList();
+            return View("~/Views/Instructor/AddLesson.cshtml",courses);
         }
         
 
@@ -60,17 +68,17 @@ namespace nyanlearnDotNet.Controllers
         public IActionResult ListCourses()
         {
 
-                        CurrentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
+                CurrentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
                 var instructor = _applicationDbContext.Instructors.FirstOrDefault(i => i.UserId == CurrentUserId);
                 CurrentInstructorId = instructor.Id;
-        IList<String> courseIds=null;
-        IList<CourseViewModel> courses=null;
-            courseIds = _applicationDbContext.CourseInstructors
+                IList<String> courseIds=null;
+                IList<CourseViewModel> courses=null;
+                courseIds = _applicationDbContext.CourseInstructors
                         .Where(ci => ci.InstructorId == CurrentInstructorId)
                         .Select(ci => ci.CourseId)
                         .ToList();
 
-            courses = _applicationDbContext.Courses
+                courses = _applicationDbContext.Courses
                         .Where(c => courseIds.Contains(c.Id))
                         .Select(course => new CourseViewModel { 
                         Name = course.Name,
@@ -89,34 +97,70 @@ namespace nyanlearnDotNet.Controllers
 
 
 
-[Authorize(Roles = "instructor")]
+ [Authorize(Roles = "instructor")]
         [HttpPost]
         public IActionResult AddCourse(CourseViewModel courseViewModel)
         {
 
-                            CurrentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
+                CurrentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
                 var instructor = _applicationDbContext.Instructors.FirstOrDefault(i => i.UserId == CurrentUserId);
                 CurrentInstructorId = instructor.Id;
-            Course course = new Course();
-            //audit columns
-            var generatedCourseId = Guid.NewGuid().ToString();
-            course.Id = generatedCourseId;
-            course.CreatedDate = DateTime.Now;
-            course.Name = courseViewModel.Name;
-            course.Description = courseViewModel.Description;
+                Course course = new Course();
+                //audit columns
+                var generatedCourseId = Guid.NewGuid().ToString();
+                course.Id = generatedCourseId;
+                course.CreatedDate = DateTime.Now;
+                course.Name = courseViewModel.Name;
+                course.Description = courseViewModel.Description;
+                course.InstructorId = CurrentInstructorId;
 
 
-            CourseInstructor courseInstructor = new CourseInstructor();
-            courseInstructor.Id = Guid.NewGuid().ToString();
-            courseInstructor.CourseId = generatedCourseId;
-            courseInstructor.CreatedDate = DateTime.Now;
+                CourseInstructor courseInstructor = new CourseInstructor();
+                courseInstructor.Id = Guid.NewGuid().ToString();
+                courseInstructor.CourseId = generatedCourseId;
+                courseInstructor.CreatedDate = DateTime.Now;
 
-            // hard code for instructor( mr kyaing )
-            courseInstructor.InstructorId = CurrentInstructorId;
+                //  hard code for instructor( mr kyaing )
+                courseInstructor.InstructorId = CurrentInstructorId;
 
-            //Adding the record Students DBSet
-            _applicationDbContext.Courses.Add(course);
-            _applicationDbContext.CourseInstructors.Add(courseInstructor);
+                //Adding the record Students DBSet
+                _applicationDbContext.Courses.Add(course);
+                _applicationDbContext.CourseInstructors.Add(courseInstructor);
+
+            _applicationDbContext.SaveChanges();//saving the record to the database
+            return RedirectToAction("Index");
+        }
+
+
+ [Authorize(Roles = "instructor")]
+        [HttpPost]
+        public IActionResult AddLesson(LessonViewModel lessonViewModel)
+        {
+
+                CurrentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
+                var instructor = _applicationDbContext.Instructors.FirstOrDefault(i => i.UserId == CurrentUserId);
+                CurrentInstructorId = instructor.Id;
+
+                
+                Lesson lesson = new Lesson();
+                //audit columns
+                var generatedLessonId = Guid.NewGuid().ToString();
+                lesson.Id = generatedLessonId;
+                lesson.CreatedDate = DateTime.Now;
+                lesson.Name = lessonViewModel.Name;
+                lesson.Description = lessonViewModel.Description;
+
+
+                CourseLessons courseLesson = new CourseLessons();
+                courseLesson.Id = Guid.NewGuid().ToString();
+                courseLesson.LessonId = generatedLessonId;
+                courseLesson.CourseId = lessonViewModel.CourseId;
+                courseLesson.InstructorId = CurrentInstructorId;
+
+
+                //Adding the record Students DBSet
+                _applicationDbContext.Lessons.Add(lesson);
+                _applicationDbContext.CourseLessons.Add(courseLesson);
 
             _applicationDbContext.SaveChanges();//saving the record to the database
             return RedirectToAction("Index");

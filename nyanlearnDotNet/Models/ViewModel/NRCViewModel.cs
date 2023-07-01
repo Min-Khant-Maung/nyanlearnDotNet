@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace nyanlearnDotNet.Models
 {
-    public class NRCViewModel : BaseEntity
+    public class NRCViewModel
     {
         public string name_en { get; set; }
         public int nrc_code { get; set; }

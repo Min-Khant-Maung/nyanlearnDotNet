@@ -8,8 +8,10 @@ using Microsoft.AspNetCore.Identity;
 
 namespace nyanlearnDotNet.Models.ViewModel
 {
-    public class CourseIdViewModel : BaseEntity
+    public class CourseLessonViewModel: BaseEntity
     {
+        public string CourseId { get; set; }
+        public string LessonId { get; set; }
     }
 }
 

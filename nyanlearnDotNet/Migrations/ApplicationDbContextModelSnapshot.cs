@@ -313,22 +313,21 @@ namespace nyanlearnDotNet.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CourseId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("InstructorId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("LessonId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
-
-                    b.HasIndex("LessonId");
 
                     b.ToTable("CourseLessons");
                 });
@@ -418,6 +417,9 @@ namespace nyanlearnDotNet.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("InstructorId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
 
@@ -425,6 +427,8 @@ namespace nyanlearnDotNet.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("InstructorId");
 
                     b.ToTable("Lesson");
                 });
@@ -452,6 +456,43 @@ namespace nyanlearnDotNet.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Nrc");
+                });
+
+            modelBuilder.Entity("nyanlearnDotNet.Models.PublicRegister", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DOB")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FatherName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("NRC")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PublicRegister");
                 });
 
             modelBuilder.Entity("nyanlearnDotNet.Models.Region", b =>
@@ -598,9 +639,11 @@ namespace nyanlearnDotNet.Migrations
 
             modelBuilder.Entity("nyanlearnDotNet.Models.Course", b =>
                 {
-                    b.HasOne("nyanlearnDotNet.Models.Instructor", null)
+                    b.HasOne("nyanlearnDotNet.Models.Instructor", "Instructor")
                         .WithMany("Courses")
                         .HasForeignKey("InstructorId");
+
+                    b.Navigation("Instructor");
                 });
 
             modelBuilder.Entity("nyanlearnDotNet.Models.CourseInstructor", b =>
@@ -616,21 +659,6 @@ namespace nyanlearnDotNet.Migrations
                     b.Navigation("Course");
 
                     b.Navigation("Instructor");
-                });
-
-            modelBuilder.Entity("nyanlearnDotNet.Models.CourseLessons", b =>
-                {
-                    b.HasOne("nyanlearnDotNet.Models.Course", "Course")
-                        .WithMany()
-                        .HasForeignKey("CourseId");
-
-                    b.HasOne("nyanlearnDotNet.Models.Lesson", "Lesson")
-                        .WithMany()
-                        .HasForeignKey("LessonId");
-
-                    b.Navigation("Course");
-
-                    b.Navigation("Lesson");
                 });
 
             modelBuilder.Entity("nyanlearnDotNet.Models.Instructor", b =>
@@ -657,6 +685,13 @@ namespace nyanlearnDotNet.Migrations
                     b.Navigation("Instructor");
                 });
 
+            modelBuilder.Entity("nyanlearnDotNet.Models.Lesson", b =>
+                {
+                    b.HasOne("nyanlearnDotNet.Models.Instructor", null)
+                        .WithMany("Lessons")
+                        .HasForeignKey("InstructorId");
+                });
+
             modelBuilder.Entity("nyanlearnDotNet.Models.Student", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
@@ -669,6 +704,8 @@ namespace nyanlearnDotNet.Migrations
             modelBuilder.Entity("nyanlearnDotNet.Models.Instructor", b =>
                 {
                     b.Navigation("Courses");
+
+                    b.Navigation("Lessons");
                 });
 #pragma warning restore 612, 618
         }

@@ -21,6 +21,7 @@ namespace nyanlearnDotNet.Models
         public string Phone { get; set; }
         public DateTime DOB { get; set; }
         public virtual IList<Course> Courses { get; set; }
+        public virtual IList<Lesson> Lessons { get; set; }
         public string UserId { get; set; }
         [ForeignKey("UserId")]
         public virtual IdentityUser User { get; set; }

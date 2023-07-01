@@ -8,24 +8,126 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using nyanlearnDotNet.Library.Email;
 
 namespace nyanlearnDotNet.Controllers
 {
-    [Authorize]
+    // [Authorize]
     public class AdminController : Controller
     {
 
         private readonly ApplicationDbContext _applicationDbContext;
         private readonly UserManager<IdentityUser> _usermanager;
+        private readonly ILogger<AdminController> _logger;
+        private readonly IEmailSender _emailSender;
+        private static readonly Random random = new Random();
+        private const string alphanumericChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        private const string specialChars = "!@#$%^&*";
 
-        public AdminController(ApplicationDbContext applicationDbContext, UserManager<IdentityUser> userManager)
+
+        public AdminController(ApplicationDbContext applicationDbContext, UserManager<IdentityUser> userManager,ILogger<AdminController> logger,  IEmailSender emailSender)
         {
             _applicationDbContext = applicationDbContext;
             _usermanager = userManager;
+            _logger = logger;
+            _emailSender = emailSender;
         }
         public IActionResult Index()
         {
             return View("~/Views/Admin/Index.cshtml");
+        }
+
+
+        
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> ListPublicRegister()
+        {
+            await _emailSender.SendEmailAsync("nyilynnhtwe@gmail.com", "testing", "Hello world");
+            IList<PublicRegisterViewModel> publicRegisters = _applicationDbContext.PublicRegisters.Select
+                (t => new PublicRegisterViewModel
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                    Email = t.Email,
+                    FatherName = t.FatherName,
+                    DOB = t.DOB,
+                    NRC = t.NRC,
+                    Address = t.Address,
+                    Phone = t.Phone
+                }).ToList();
+
+
+
+            return View("~/Views/Admin/PublicRegisterList.cshtml", publicRegisters);
+        }
+
+        [Authorize(Roles = "admin")]
+        public IActionResult BanPublicRegister(string id)
+        {
+            _logger.LogInformation(id);
+            var data = _applicationDbContext.PublicRegisters.Find(id);
+            if (data != null) {
+                _applicationDbContext.PublicRegisters.Remove(data);
+                _applicationDbContext.SaveChanges();//Updating  the record to the database
+                TempData["msg"] = "Delete process successed!!";
+            }
+            return RedirectToAction("ListPublicRegister");
+        }
+
+
+
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> ApprovePublicRegister(string id)
+        {
+
+            var generatedEmail    = "nyanlearn_student_";
+            var generatedPassword = GeneratePassword(8);
+            var numOfStudents = _applicationDbContext.Students.Count()+1;
+
+            _logger.LogInformation(generatedEmail);
+            _logger.LogInformation(generatedPassword);
+            for(int i=numOfStudents.ToString().Length;i<4;i++)
+            {
+                generatedEmail = generatedEmail + "0";
+            }
+            generatedEmail = generatedEmail + numOfStudents.ToString() + "@nyanlearn.com"; 
+
+
+            var user = new IdentityUser { UserName = generatedEmail, Email = generatedEmail};
+            var result = await _usermanager.CreateAsync(user,generatedPassword);
+            if (result.Succeeded)
+            {
+                await _usermanager.AddToRoleAsync(user, "student");
+            }
+
+
+
+            var data = _applicationDbContext.PublicRegisters.Find(id);
+            Student student = new Student();
+            student.Id = Guid.NewGuid().ToString();
+            student.Name = data.Name;
+            student.DOB  = data.DOB;
+            student.Email= generatedEmail;
+            student.NRC  = data.NRC;
+            student.Address = data.Address;
+            student.Phone   = data.Phone;
+            student.FatherName = data.FatherName;
+            student.UserId     = user.Id;
+
+
+            if (data != null) {
+                
+
+                _applicationDbContext.Students.Add(student);
+                _applicationDbContext.PublicRegisters.Remove(data);
+
+
+
+                _applicationDbContext.SaveChanges();//Updating  the record to the database
+                TempData["msg"] = "Delete process successed!!";
+            }
+            return RedirectToAction("ListStudents");
         }
 
         [Authorize(Roles = "admin")]
@@ -155,5 +257,14 @@ namespace nyanlearnDotNet.Controllers
             return RedirectToAction("ListInstructors");
         }
 
+
+
+
+         public static string GeneratePassword(int length)
+        {
+            string chars = alphanumericChars + specialChars;
+            return new string(Enumerable.Repeat(chars, length)
+            .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
     }
 }

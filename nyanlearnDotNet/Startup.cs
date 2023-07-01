@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using nyanlearnDotNet.Models;
 using System.Threading.Tasks;
+using nyanlearnDotNet.Library.Email;
 
 namespace nyanlearn
 {
@@ -31,7 +32,7 @@ namespace nyanlearn
             services.AddRazorPages();//for identity config.
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("SFMSConnectionString")));
-
+            services.AddTransient<IEmailSender, EmailSender>();
 
 
 

@@ -3,9 +3,13 @@
     {
         Layout = "_LayoutInstructor";
     }
+    else if (User.IsInRole("student"))
+    {
+        Layout = "_LayoutStudent";
+    }
     else if(User.IsInRole("admin"))
     {
-                Layout = "_LayoutAdmin";
+        Layout = "_LayoutAdmin";
     }
     else
     {

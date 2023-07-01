@@ -1,0 +1,32 @@
+<div class="content-wrapper">
+    @model IList<CourseViewModel>
+
+        <h1>Teacher List</h1>
+
+    @*<a href="/Teacher/Entry" class="btn btn-info" role="button">Create</a>*@
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Name</td>
+                <td>Description</td>
+
+
+                @*<td>Action</td>
+                <td></td>*@
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var t in Model)
+            {
+            <tr>
+                <td>@t.Name</td>
+                <td>@Html.Raw(t.Description)</td>
+
+
+                @*<td><a href="/Admin/Edit?Id=@t.Id" class="btn btn-success" role="button">Edit</a></td>
+                <td><a href="/Admin/Delete?Id=@t.Id" class="btn btn-danger" onclick="return confirm('Are you sure to delete this record?')">Delete</a></td>*@
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

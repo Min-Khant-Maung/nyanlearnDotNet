@@ -38,22 +38,20 @@ namespace testLayout.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult PublicRegister(StudentViewModel studentViewModel)
+        public IActionResult PublicRegister(PublicRegisterViewModel publicRegisterViewModel)
         {
-            Student student = new Student();
-            student.Id = Guid.NewGuid().ToString();
-            student.CreatedDate = DateTime.Now;
-            student.Name = studentViewModel.Name;
-            student.Email = studentViewModel.Email;
-            student.Password ="";
-            student.Phone = studentViewModel.Phone;
-            student.Address = studentViewModel.Address;
-            student.NRC = studentViewModel.NRC;
-            student.DOB = studentViewModel.DOB;
-            student.FatherName = studentViewModel.FatherName;
-            _applicationDbContext.Students.Add(student);//Adding the record Students DBSet
+            PublicRegister publicRegister = new PublicRegister();
+            publicRegister.Id = Guid.NewGuid().ToString();
+            publicRegister.CreatedDate = DateTime.Now;
+            publicRegister.Name = publicRegisterViewModel.Name;
+            publicRegister.Email = publicRegisterViewModel.Email;
+            publicRegister.Phone = publicRegisterViewModel.Phone;
+            publicRegister.Address = publicRegisterViewModel.Address;
+            publicRegister.NRC = publicRegisterViewModel.NRC;
+            publicRegister.DOB = publicRegisterViewModel.DOB;
+            publicRegister.FatherName = publicRegisterViewModel.FatherName;
+            _applicationDbContext.PublicRegisters.Add(publicRegister);//Adding the record Students DBSet
             _applicationDbContext.SaveChanges();
-
             return View();
         }
 

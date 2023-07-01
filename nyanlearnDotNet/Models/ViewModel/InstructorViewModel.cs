@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace nyanlearnDotNet.Models.ViewModel
 {
-    public class InstructorViewModel : BaseEntity
+    public class InstructorViewModel: BaseEntity
     {
         public string Name { get; set; }
         public string Email { get; set; }

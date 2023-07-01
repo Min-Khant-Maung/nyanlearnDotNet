@@ -1,0 +1,62 @@
+@model IList<Course>
+<div class="content-wrapper">
+    @{
+        string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(Model);
+    }
+    <div class="teacherForm">
+        <h1>Create Lesson</h1>
+        <form action="/Instructor/AddLesson" method="POST">
+
+
+            <div class="mb-3 teacher-inputs">
+                <label class="form-label">Courses</label>
+                <select class="form-control" name="CourseId" id="courses_dd">
+                    <option></option>
+                </select>
+            </div>
+
+            <div class="mb-3 teacher-inputs">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-control" name="Name" placeholder="Lesson Name" required>
+            </div>
+
+            <textarea id="mytextarea" name="Description">Hello, World!</textarea>
+
+
+            <div class="mb-3 teacher-inputs">
+                <div class="row">
+                    <div class="col">
+                        <input type="submit" class="btn btn-success" value="Entry" />
+                    </div>
+                    <div class="col">
+                        <input type="reset" class="btn btn-secondary" value="Cancel" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    var data = @Html.Raw(jsonData);
+    console.log(data);
+    let courses_dd = document.getElementById("courses_dd");
+    for (let i = 0; i <= data.length; i++) {
+        courses_dd.innerHTML += `<option value="${data[i].Id}">${data[i].Name}</option>`;
+    }
+
+
+    // nrc_code_dd.addEventListener("change", (event) => {
+    //     clickedNRCode(event.target.value);
+    // });
+
+
+    // function clickedNRCode(code) {
+    //     name_en_dd.innerHTML = "";
+    //     let temp = data.filter((d) => d.nrc_code === parseInt(code)).sort();
+    //     console.log(temp);
+    //     for (let i = 0; i < temp.length; i++) {
+    //         name_en_dd.innerHTML += `<option value="${temp[i].name_en}">${temp[i].name_en}</option>`;
+    //     }
+
+    // }
+</script>
