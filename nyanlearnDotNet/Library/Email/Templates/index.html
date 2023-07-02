@@ -5,28 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acc verification</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+
     <style type="text/css">
+        html{
+            font-family: 'Montserrat', sans-serif;
+            background-color: #ede7e7;
+        }
         img{
-            width: 100px;
+            width: 50px;
         }
         .header{
             display: flex;
             justify-content: center;
         }
-        h1,p{
-            text-align: center;
-        }
-        a{
+        .button{
             text-decoration: none;
             color:black;
             padding:20px;
             background-color: orangered;
-            margin-top: 5px;
         }
         hr{
-            margin-top: 10px;
             width: 70%;
         }
+        .box1{
+            text-align: center;
+        }
+        .confirm{
+            margin-bottom: 7%;
+        }
+        .box2{
+            text-align: center;
+        }
+        li{
+            margin-bottom: 5%;
+        }
+        
     </style>
 
 </head>
@@ -35,15 +51,33 @@
         <img src="cat-2083492_1280.jpg" alt="cat">
         <p>dfsdf</p>
     </div>
-    <div class="container">
+    <div class="box1">
         <h1>Hey, Florject</h1>
         <h1>Welcome to the HTB community!</h1>
-        <p>You successfully completed your registration process.
+        <p class="confirm">You successfully completed your registration process.<br>
             Remember to verify your email address.
         </p>
-        <a href="#">Verify Your Email</a>
+        <a href="#" class="button">Verify Your Email</a>
     </div>
     <br>
     <hr/>
+    <div class="box2">
+        <p>
+            You are just 2 simple steps away from fully enjoying<br>
+            the biggest hacking playground around:
+        </p>
+        <ul>
+            <li>
+                Be part of  our community on <a href="#">Discord</a>. <br>
+                This is the place where the coolest things happen, better be there!
+            </li>
+            <li>
+                Follow us on Social Media, we are posting updates daily!
+            </li>
+        </ul>
+    </div>
 </body>
+<footer>
+
+</footer>
 </html>
