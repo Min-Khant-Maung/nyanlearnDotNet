@@ -22,8 +22,8 @@
                     <td>@t.Name</td>
                     <td>@Html.Raw(t.Description)</td>
 
-                    <td><a href="/Student/Edit?Id=@t.Id" class="btn btn-success" role="button">Edit</a></td>
-                    <td><a href="/Student/Delete?Id=@t.Id" class="btn btn-danger" onclick="return confirm('Are you sure to delete this record?')">Delete</a></td>
+                    <td><a href="/Student/Edit?courseId=@t.Id" class="btn btn-success" role="button">Edit</a></td>
+                    <td><a href="/Student/EnrollCourse?courseId=@t.Id" class="btn btn-danger" onclick="return confirm('Are you sure to ehroll this course?')">Enroll</a></td>
                 </tr>
             }
         </tbody>

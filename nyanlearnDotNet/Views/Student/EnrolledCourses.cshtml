@@ -1,0 +1,23 @@
+﻿<div class="content-wrapper">
+    @model IList<CourseViewModel>
+
+    <h1>List All Courses</h1>
+
+
+            @foreach (var t in Model)
+            {
+                <div class="card" style="width: 18rem;">
+                    <img src="https://i.insider.com/5edfa7ceaee6a855594a9df4?width=1000&format=jpeg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">@t.Name</h5>
+                        <p class="card-text">@Html.Raw(t.Description)</p>
+                        <a href="/Student/Learn/?courseId=@t.Id" class="btn btn-primary">Let's study</a>
+                    </div>
+                </div>
+
+            }
+
+
+
+
+</div>

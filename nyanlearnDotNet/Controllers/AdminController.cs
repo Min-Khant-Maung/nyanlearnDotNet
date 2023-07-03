@@ -10,6 +10,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using nyanlearnDotNet.Library.Email;
+using System.Text;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+
 
 namespace nyanlearnDotNet.Controllers
 {
@@ -21,17 +25,20 @@ namespace nyanlearnDotNet.Controllers
         private readonly UserManager<IdentityUser> _usermanager;
         private readonly ILogger<AdminController> _logger;
         private readonly IEmailSender _emailSender;
+
+        private static IWebHostEnvironment _webHostEnvironment;
         private static readonly Random random = new Random();
         private const string alphanumericChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         private const string specialChars = "!@#$%^&*";
 
 
-        public AdminController(ApplicationDbContext applicationDbContext, UserManager<IdentityUser> userManager,ILogger<AdminController> logger,  IEmailSender emailSender)
+        public AdminController(ApplicationDbContext applicationDbContext, UserManager<IdentityUser> userManager,ILogger<AdminController> logger,  IEmailSender emailSender,IWebHostEnvironment webHostEnvironment)
         {
             _applicationDbContext = applicationDbContext;
             _usermanager = userManager;
             _logger = logger;
             _emailSender = emailSender;
+            _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()
         {
@@ -41,9 +48,8 @@ namespace nyanlearnDotNet.Controllers
 
         
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> ListPublicRegister()
+        public IActionResult ListPublicRegister()
         {
-            await _emailSender.SendEmailAsync("nyilynnhtwe@gmail.com", "testing", "Hello world");
             IList<PublicRegisterViewModel> publicRegisters = _applicationDbContext.PublicRegisters.Select
                 (t => new PublicRegisterViewModel
                 {
@@ -81,9 +87,15 @@ namespace nyanlearnDotNet.Controllers
         public async Task<IActionResult> ApprovePublicRegister(string id)
         {
 
+            // string projectRootPath = _webHostEnvironment.ContentRootPath;
+            // var rawHTMLString      = GetHtmlFromFile(projectRootPath+"/Library/Email/Templates/index.cshtml");
+
+       
+
+
             var generatedEmail    = "nyanlearn_student_";
             var generatedPassword = GeneratePassword(8);
-            var numOfStudents = _applicationDbContext.Students.Count()+1;
+            var numOfStudents =  _applicationDbContext.Students.Count()+1;
 
             _logger.LogInformation(generatedEmail);
             _logger.LogInformation(generatedPassword);
@@ -91,8 +103,8 @@ namespace nyanlearnDotNet.Controllers
             {
                 generatedEmail = generatedEmail + "0";
             }
-            generatedEmail = generatedEmail + numOfStudents.ToString() + "@nyanlearn.com"; 
-
+            generatedEmail = generatedEmail + numOfStudents.ToString() + "@nyanlearn.com";
+           
 
             var user = new IdentityUser { UserName = generatedEmail, Email = generatedEmail};
             var result = await _usermanager.CreateAsync(user,generatedPassword);
@@ -104,6 +116,18 @@ namespace nyanlearnDotNet.Controllers
 
 
             var data = _applicationDbContext.PublicRegisters.Find(id);
+
+
+            // var messageBody = string.Format(rawHTMLString,
+            //     generatedEmail,
+            //     generatedPassword,
+            //     String.Format("{0:dddd, d MMMM yyyy}", DateTime.Now)
+            //     );
+
+            var messageBody = $"email : {generatedEmail} password : {generatedPassword}";  
+
+
+            await _emailSender.SendEmailAsync(data.Email, "NyanLearn Registration Completed",messageBody);
             Student student = new Student();
             student.Id = Guid.NewGuid().ToString();
             student.Name = data.Name;
@@ -260,11 +284,74 @@ namespace nyanlearnDotNet.Controllers
 
 
 
-         public static string GeneratePassword(int length)
+        public static string GeneratePassword(int length)
         {
-            string chars = alphanumericChars + specialChars;
-            return new string(Enumerable.Repeat(chars, length)
-            .Select(s => s[random.Next(s.Length)]).ToArray());
+            StringBuilder password = new StringBuilder();
+
+            // Generate one uppercase letter
+            password.Append(GenerateRandomChar("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+
+            // Generate one lowercase letter
+            password.Append(GenerateRandomChar("abcdefghijklmnopqrstuvwxyz"));
+
+            // Generate one special character
+            password.Append(GenerateRandomChar(specialChars));
+
+            password.Append(GenerateRandomChar("0123456789"));
+
+            // Generate the remaining random part of the password
+            for (int i = 0; i < length - 4; i++)
+            {
+                password.Append(GenerateRandomChar(alphanumericChars));
+            }
+
+            // Shuffle the characters in the password
+            string shuffledPassword = ShufflePassword(password.ToString());
+
+            return shuffledPassword;
         }
+
+        private static char GenerateRandomChar(string characters)
+        {
+            return characters[random.Next(characters.Length)];
+        }
+
+        private static string ShufflePassword(string password)
+        {
+            char[] passwordChars = password.ToCharArray();
+
+            for (int i = passwordChars.Length - 1; i > 0; i--)
+            {
+                int j = random.Next(i + 1);
+                (passwordChars[i], passwordChars[j]) = (passwordChars[j], passwordChars[i]);
+            }
+
+            return new string(passwordChars);
+        }
+
+
+
+        private string GetHtmlFromFile(string filePath)
+        {
+            try
+            {
+                // Read the content of the HTML file
+                string htmlBody;
+                using (StreamReader sr = new StreamReader(filePath))
+                {
+                    htmlBody = sr.ReadToEnd();
+                }
+                return htmlBody;
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions that may occur while reading the file
+                // For simplicity, you can return an empty string or a default HTML template
+                // You may also log the error for further investigation.
+                return string.Empty;
+            }
+        }
+
+
     }
 }
