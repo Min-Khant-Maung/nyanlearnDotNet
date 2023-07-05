@@ -265,6 +265,9 @@ namespace nyanlearnDotNet.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ImagePath")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("InstructorId")
                         .HasColumnType("nvarchar(450)");
 
@@ -313,21 +316,27 @@ namespace nyanlearnDotNet.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CourseId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("InstructorId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LessonId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("InstructorId");
+
+                    b.HasIndex("LessonId");
 
                     b.ToTable("CourseLessons");
                 });
@@ -437,10 +446,16 @@ namespace nyanlearnDotNet.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("CourseName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FilePath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("InstructorId")
@@ -504,6 +519,9 @@ namespace nyanlearnDotNet.Migrations
                     b.Property<string>("FatherName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ImagePath")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
 
@@ -519,6 +537,45 @@ namespace nyanlearnDotNet.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PublicRegister");
+                });
+
+            modelBuilder.Entity("nyanlearnDotNet.Models.Quiz", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Answer")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LessonId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Option1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Option2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Option3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Option4")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Question")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LessonId");
+
+                    b.ToTable("Quiz");
                 });
 
             modelBuilder.Entity("nyanlearnDotNet.Models.Region", b =>
@@ -558,6 +615,9 @@ namespace nyanlearnDotNet.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FatherName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsApproved")
@@ -687,6 +747,27 @@ namespace nyanlearnDotNet.Migrations
                     b.Navigation("Instructor");
                 });
 
+            modelBuilder.Entity("nyanlearnDotNet.Models.CourseLessons", b =>
+                {
+                    b.HasOne("nyanlearnDotNet.Models.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId");
+
+                    b.HasOne("nyanlearnDotNet.Models.Instructor", "Instructor")
+                        .WithMany()
+                        .HasForeignKey("InstructorId");
+
+                    b.HasOne("nyanlearnDotNet.Models.Lesson", "Lesson")
+                        .WithMany()
+                        .HasForeignKey("LessonId");
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Instructor");
+
+                    b.Navigation("Lesson");
+                });
+
             modelBuilder.Entity("nyanlearnDotNet.Models.Enrollment", b =>
                 {
                     b.HasOne("nyanlearnDotNet.Models.Course", "Course")
@@ -731,6 +812,15 @@ namespace nyanlearnDotNet.Migrations
                     b.HasOne("nyanlearnDotNet.Models.Instructor", null)
                         .WithMany("Lessons")
                         .HasForeignKey("InstructorId");
+                });
+
+            modelBuilder.Entity("nyanlearnDotNet.Models.Quiz", b =>
+                {
+                    b.HasOne("nyanlearnDotNet.Models.Lesson", "Lesson")
+                        .WithMany()
+                        .HasForeignKey("LessonId");
+
+                    b.Navigation("Lesson");
                 });
 
             modelBuilder.Entity("nyanlearnDotNet.Models.Student", b =>

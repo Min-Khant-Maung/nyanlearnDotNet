@@ -1,4 +1,4 @@
-   <form action="/Home/PublicRegister" method="post">
+   <form action="/Home/PublicRegister" method="post" enctype="multipart/form-data">
     <h4>Create a new account.</h4>
     <hr />
     <div class="text-danger"></div>
@@ -36,6 +36,12 @@
         <label>FatherName</label>
         <input type="text" class="form-control" name="FatherName" required>
         <span class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <div class="input-group mb-3" id="imageUpload">
+            <input type="file" class="form-control-file" id="Photo" name="Photo">
+        </div>
     </div>
     <hr />
     <button type="submit" class="btn btn-primary">Register</button>

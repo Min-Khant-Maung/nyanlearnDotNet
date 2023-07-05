@@ -192,11 +192,14 @@ C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\ref\nyanlearnDotNet.dll
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\nyanlearnDotNet.pdb
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\nyanlearnDotNet.genruntimeconfig.cache
+C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Student\EnrolledCourses.cshtml.g.cs
+C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Student\ListAllCourses.cshtml.g.cs
+C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Course\Index.cshtml.g.cs
+C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Shared\_LayoutCourse.cshtml.g.cs
+C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Instructor\AddQuiz.cshtml.g.cs
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\staticwebassets\nyanlearnDotNet.StaticWebAssets.Pack.cache
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\staticwebassets\msbuild.nyanlearnDotNet.Microsoft.AspNetCore.StaticWebAssets.props
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\staticwebassets\msbuild.build.nyanlearnDotNet.props
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\staticwebassets\msbuild.buildMultiTargeting.nyanlearnDotNet.props
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\staticwebassets\msbuild.buildTransitive.nyanlearnDotNet.props
-C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Student\EnrolledCourses.cshtml.g.cs
-C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Student\ListAllCourses.cshtml.g.cs
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\refint\nyanlearnDotNet.dll

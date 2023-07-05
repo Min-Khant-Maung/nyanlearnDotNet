@@ -32,7 +32,7 @@ namespace nyanlearnDotNet.Models.DAO
         public DbSet<Lesson> Lessons { get; set; }
         public DbSet<CourseLessons> CourseLessons { get; set; }
 
-
+        public DbSet<Quiz> Quizs { get; set; }
 
 
         public DbSet<PublicRegister> PublicRegisters { get; set; }

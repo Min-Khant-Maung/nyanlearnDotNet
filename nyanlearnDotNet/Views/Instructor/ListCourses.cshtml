@@ -1,32 +1,19 @@
 <div class="content-wrapper">
     @model IList<CourseViewModel>
-
-        <h1>Teacher List</h1>
-
-    @*<a href="/Teacher/Entry" class="btn btn-info" role="button">Create</a>*@
-    <table class="table">
-        <thead>
-            <tr>
-                <td>Name</td>
-                <td>Description</td>
-
-
-                @*<td>Action</td>
-                <td></td>*@
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var t in Model)
+        
+        <div style="padding: 3%;">
+        <h1>List All Courses</h1>
+        @foreach (var t in Model)
             {
-            <tr>
-                <td>@t.Name</td>
-                <td>@Html.Raw(t.Description)</td>
+                <div class="card" style="width: 20rem; border-radius:10px;">
+                    <img src="~/uploads/course/@t.ImagePath" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">@t.Name</h5>
+                        <p class="card-text">@Html.Raw(t.Description)</p>
+                        <a href="/Student/Learn/?courseId=@t.Id" class="btn btn-primary">Let's study</a>
+                    </div>
+                </div>
 
-
-                @*<td><a href="/Admin/Edit?Id=@t.Id" class="btn btn-success" role="button">Edit</a></td>
-                <td><a href="/Admin/Delete?Id=@t.Id" class="btn btn-danger" onclick="return confirm('Are you sure to delete this record?')">Delete</a></td>*@
-            </tr>
             }
-        </tbody>
-    </table>
+        </div>
 </div>

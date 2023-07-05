@@ -5,6 +5,7 @@ using System.Data;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
 
 namespace nyanlearnDotNet.Models.ViewModel
 {
@@ -12,6 +13,10 @@ namespace nyanlearnDotNet.Models.ViewModel
     {
         public string Name { get; set; }
         public string Description { get; set; }
+
+        public string ImagePath { get; set; }
+
+        public IFormFile Photo { get;set; }
     }
 }
 

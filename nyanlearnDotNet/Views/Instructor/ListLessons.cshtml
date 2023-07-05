@@ -1,32 +1,53 @@
 <div class="content-wrapper">
-    @model IList<CourseViewModel>
+    @model IList<LessonViewModel>
+    @using System.Text.RegularExpressions;
 
-        <h1>Teacher List</h1>
-
-    @*<a href="/Teacher/Entry" class="btn btn-info" role="button">Create</a>*@
-    <table class="table">
-        <thead>
-            <tr>
-                <td>Name</td>
-                <td>Description</td>
-
-
-                @*<td>Action</td>
-                <td></td>*@
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var t in Model)
+    @{
+        var linkRegex = new Regex(@"^(http|https|ftp)://.*$");
+    }
+        <div style="padding: 3%;">
+        <h1>List All Courses</h1>
+        @foreach (var t in Model)
             {
-            <tr>
-                <td>@t.Name</td>
-                <td>@Html.Raw(t.Description)</td>
+                <div class="card" style="width: 30rem; border-radius:10px;">
+                @if (t.FilePath != null && linkRegex.IsMatch(t.FilePath))
+                    {
+                       
+                         if (Regex.IsMatch(t.FilePath, @"\.(jpg|jpeg|png|gif)$", RegexOptions.IgnoreCase))
+                        {
+                            <img src="@t.FilePath" class="card-img-top" alt="...">
+                        }
+                        else
+                        {
+                              <iframe class="embed-responsive-item" src="@t.FilePath" allowfullscreen></iframe>
+                        }
 
+                    }
+                    else @if (t.FilePath != null && !linkRegex.IsMatch(t.FilePath))
+                    {
+                        if (Regex.IsMatch(t.FilePath, @"\.(mp4|avi|mov|wmv|flv|mkv)$", RegexOptions.IgnoreCase))
+                        {
+                            <video controls class="embed-responsive-item">
+                                <source src="~/uploads/lesson/@t.FilePath">
+                            </video>
+                        }
+                        else if (Regex.IsMatch(t.FilePath, @"\.(jpg|jpeg|png|gif)$", RegexOptions.IgnoreCase))
+                        {
+                            <img src="~/uploads/lesson/@t.FilePath" class="card-img-top" alt="...">
+                        }
+                    }
+                   
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><h5 class="card-title">@t.Name</h5></li>
+                            <li class="list-group-item"><p class="card-text">@Html.Raw(t.Description)</p></li>
+                            <li class="list-group-item"><p class="card-text">Course Name-@t.CourseName</p></li>
+                            <li class="list-group-item"><a href="/Student/Learn/?courseId=@t.Id" class="btn btn-primary">Let's study</a></li>
+                        </ul>
+                        
+                    </div>
+                </div>
 
-                @*<td><a href="/Admin/Edit?Id=@t.Id" class="btn btn-success" role="button">Edit</a></td>
-                <td><a href="/Admin/Delete?Id=@t.Id" class="btn btn-danger" onclick="return confirm('Are you sure to delete this record?')">Delete</a></td>*@
-            </tr>
             }
-        </tbody>
-    </table>
+        </div>
 </div>

@@ -1,0 +1,139 @@
+@model IList<CreateQuizViewModel>
+   
+    @{
+        string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(Model);
+    }
+    <div style="width: 70%; margin:auto; padding:5% 0%;">
+        <h1>Create Lesson</h1>
+        <form action="/Instructor/Quiz/Add" method="POST">
+
+
+            <div class="mb-3 teacher-inputs">
+                <label class="form-label">Courses</label>
+                <select class="form-control" name="CourseId" id="courses_dd" onchange="displayLessons(event)">
+                    <option></option>
+                </select>
+            </div>
+
+
+            
+            <div class="mb-3 teacher-inputs">
+                <label class="form-label">Lessons</label>
+                <select class="form-control" name="LessonId" id="lessons_dd">
+                    <option></option>
+                </select>
+            </div>
+
+            <div class="mb-3 teacher-inputs">
+                <label class="form-label">Number Of Questions</label>
+                <input type="text" style="display:none;" class="form-control" name="NumberOfQuestions" disabled>
+            </div>
+
+
+
+            <div class="mb-3 teacher-inputs">
+                <label class="form-label">Question</label>
+                <textarea id="mytextarea" name="Question" placeholder="Enter Question"></textarea>
+            </div>
+
+             <div class="mb-3 teacher-inputs">
+                <input type="text" style="margin:10px" class="form-control"  name="Option1" placeholder="Enter Option 1" required>
+                <input type="text" style="margin:10px" class="form-control" name="Option2" placeholder="Enter Option 2" required>
+                <input type="text" style="margin:10px" class="form-control" name="Option3" placeholder="Enter Option 3" required>
+                <input type="text" style="margin:10px" class="form-control" name="Option4" placeholder="Enter Option 4" required>
+            </div>
+
+                <div class="mb-3 teacher-inputs">
+                <label class="form-label">Correct Answer</label>
+                <select class="form-control" name="Answer">
+                    <option value="Option1">Option 1</option>
+                    <option value="Option2">Option 2</option>
+                    <option value="Option3">Option 3</option>
+                    <option value="Option4">Option 4</option>
+                </select>
+            </div>
+
+
+
+            
+
+
+
+            <div class=" teacher-inputs">
+                <div class="row">
+                    <div class="controlBtns">
+                        <input type="submit" class="btn btn-success" value="Entry" />
+                    </div>
+                    <div class="controlBtns">
+                        <input type="reset" class="btn btn-secondary" value="Cancel" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    tinymce.init({
+      selector: 'textarea',
+      plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss',
+      toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+      tinycomments_mode: 'embedded',
+      tinycomments_author: 'Author name',
+      mergetags_list: [
+        { value: 'First.Name', title: 'First Name' },
+        { value: 'Email', title: 'Email' },
+      ]
+    });
+
+
+    var data = @Html.Raw(jsonData);
+    let courses = [];
+
+data.forEach(item => {
+    const courseName = item.CourseName;
+    const courseId = item.CourseId;
+    
+    const existingCourse = courses.find(course => course.CourseName === courseName);
+    console.log(existingCourse);
+    if (!existingCourse) {
+        courses.push({ CourseName: courseName, CourseId: courseId });
+    }
+});
+
+let lessons= data.map(item => {
+    return {
+        Id: item.LessonId,
+        Name: item.LessonName
+    };
+});
+    
+
+
+
+
+    let courses_dd = document.getElementById("courses_dd");
+    let lessons_dd = document.getElementById("lessons_dd");
+
+
+
+    for (let i = 0; i <= courses.length; i++) {
+        courses_dd.innerHTML += `<option value="${courses[i].CourseId}">${courses[i].CourseName}</option>`;
+    }
+
+
+
+        function displayLessons(event) {
+        
+        let courseId = event.target.value;
+        lessons_dd.innerHTML = "";
+        let temp = data.filter((d) => d.CourseId === courseId);
+        console.log(temp);
+        for (let i = 0; i < temp.length; i++) {
+            lessons_dd.innerHTML += `<option value="${temp[i].LessonId}">${temp[i].LessonName}</option>`;
+        }
+    }
+
+
+
+
+</script>

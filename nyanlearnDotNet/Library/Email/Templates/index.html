@@ -4,50 +4,10 @@
     <meta charset="UTF-8">
 
     <title>Document</title>
-    <script src="https://www.youtube.com/iframe_api"></script>
 </head>
 <body>
-
-    <h1>Add Video</h1>
-
-    <label for="">Local Video</label>
-    <input type="radio" name="videoOptions" id="" value="local"> 
-
-    <label for="">Youtube Video</label>
-    <input type="radio" name="videoOptions" id="" value="youtube"> 
-
-
-    <div id="videoUploadDiv">
-
-    </div>
-
-
-    <input type="submit" id="submitBtn" value="submit">
-    
     
 </body>
 
-<script>
-
-    let submitBtn = document.getElementById("submitBtn");
-    let videoDiv = document.getElementById("videoUploadDiv");
-
-  const radioButtons = document.querySelectorAll('input[name="videoOptions"]');
-  
-  radioButtons.forEach(function(radioButton) {
-    radioButton.addEventListener('change', function() {
-      if (this.checked) {
-        const videoOption = this.value;
-        if (videoOption == "local") {
-            
-            videoDiv.innerHTML = '<input type="file" name="Video" id="localVideo">'
-        }
-        else if(videoOption == "youtube"){
-            videoDiv.innerHTML = '<input type="text" name="Video" id="youtubeVideo">'
-        }
-      }
-    });
-  });
-
-  </script>
+<script src="./script.js"></script>
 </html>

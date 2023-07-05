@@ -1,7 +1,7 @@
 <div class="content-wrapper">
-    <div class="teacherForm">
+    <div style="width: 70%; margin:auto; padding:5% 0%;" >
         <h1>Create Course</h1>
-        <form action="/Instructor/AddCourse" method="POST">
+        <form action="/Instructor/AddCourse" method="POST" enctype="multipart/form-data">
 
 
             <div class="mb-3 teacher-inputs">
@@ -9,7 +9,15 @@
                 <input type="text" class="form-control" name="Name" placeholder="Course Name" required>
             </div>
 
-            <textarea id="mytextarea" name="Description">Hello, World!</textarea>
+            <div class="mb-3 teacher-inputs">
+                <label class="form-label">Description</label>
+                <textarea id="mytextarea" name="Description" placeholder="Enter description"></textarea>
+            </div>
+
+            <div class="input-group mb-3" id="imageUpload">
+                <label class="form-label">Photo</label>
+                <input type="file" class="form-control-file" id="Photo" name="Photo">
+            </div>
 
 
             <div class="mb-3 teacher-inputs">
@@ -25,3 +33,17 @@
         </form>
     </div>
 </div>
+
+<script>
+    tinymce.init({
+      selector: 'textarea',
+      plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss',
+      toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+      tinycomments_mode: 'embedded',
+      tinycomments_author: 'Author name',
+      mergetags_list: [
+        { value: 'First.Name', title: 'First Name' },
+        { value: 'Email', title: 'Email' },
+      ]
+    });
+  </script>

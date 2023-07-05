@@ -68,6 +68,25 @@ namespace nyanlearnDotNet.Controllers
             return View("~/Views/Admin/PublicRegisterList.cshtml", publicRegisters);
         }
 
+        
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> StudentDelete(string studentId)
+        {
+            var student = _applicationDbContext.Students.Find(studentId);
+            var user = await  _usermanager.FindByIdAsync(student.UserId);
+
+
+            var result =  await _usermanager.DeleteAsync(user);
+
+            _applicationDbContext.Students.Remove(student);
+            _applicationDbContext.SaveChanges();//Updating  the record to the database
+            TempData["msg"] = "Delete process successed!!";
+            
+            return RedirectToAction("ListStudents");
+        }
+
+
+
         [Authorize(Roles = "admin")]
         public IActionResult BanPublicRegister(string id)
         {
@@ -138,6 +157,7 @@ namespace nyanlearnDotNet.Controllers
             student.Phone   = data.Phone;
             student.FatherName = data.FatherName;
             student.UserId     = user.Id;
+            student.ImagePath  = data.ImagePath;
 
 
             if (data != null) {
@@ -160,6 +180,7 @@ namespace nyanlearnDotNet.Controllers
             IList<StudentViewModel> stus = _applicationDbContext.Students.Select
                 (s => new StudentViewModel
                 {
+                    Id = s.Id,
                     Name = s.Name,
                     DOB = s.DOB,
                     Email = s.Email,
@@ -167,6 +188,7 @@ namespace nyanlearnDotNet.Controllers
                     Address = s.Address,
                     Phone = s.Phone,
                     FatherName = s.FatherName,
+                    ImagePath  = s.ImagePath,
                     IsApproved = s.IsApproved
                 }).ToList();
 

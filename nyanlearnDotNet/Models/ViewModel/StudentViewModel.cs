@@ -20,6 +20,9 @@ namespace nyanlearnDotNet.Models.ViewModel
         public string Phone { get; set; }
         public string FatherName { get; set; }
 
+
+        public string ImagePath { get; set;}
+
         public bool IsApproved { get; set; }
 
 

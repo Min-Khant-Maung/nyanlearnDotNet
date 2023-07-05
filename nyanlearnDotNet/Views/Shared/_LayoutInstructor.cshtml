@@ -7,7 +7,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Dashboard</title>
+    <title>nyanlearn | Instructor</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -30,7 +30,10 @@
     <!-- summernote -->
     <link rel="stylesheet" href="~/plugins/admin/summernote/summernote-bs4.min.css">
 
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <link rel="stylesheet" href="~/css/instructor/style.css">
+ <script src="https://cdn.tiny.cloud/1/py3cdb9hsa3whc5ga2yu061f1x28bhg9fx3ucctclurdu4av/tinymce/6/tinymce.min.js" referrerpolicy="origin">
+
+    
 
     <script>
         tinymce.init({
@@ -201,21 +204,11 @@
                         <img src="~/img/admin/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">Alexander Pierce</a>
+                        <a href="#" class="d-block username">@UserManager.GetUserName(User)</a>
                     </div>
                 </div>
 
-                <!-- SidebarSearch Form -->
-                <!-- <div class="form-inline">
-                    <div class="input-group" data-widget="sidebar-search">
-                        <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-                        <div class="input-group-append">
-                            <button class="btn btn-sidebar">
-                                <i class="fas fa-search fa-fw"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div> -->
+
 
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
@@ -234,11 +227,6 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="/Admin/AddStudent" class="nav-link active">
-                                        <p>Add Student</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
                                     <a href="/Admin/ListStudents" class="nav-link">
                                         <p>List Student</p>
                                     </a>
@@ -256,12 +244,12 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="/Instructor/AddCourse" class="nav-link active">
+                                    <a href="/Instructor/Course/Add" class="nav-link">
                                         <p>Add Course</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="/Instructor/ListCourses" class="nav-link">
+                                    <a href="/Instructor/Course/List" class="nav-link">
                                         <p>List Course</p>
                                     </a>
                                 </li>
@@ -280,12 +268,34 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="/Instructor/AddLesson" class="nav-link active">
+                                    <a href="/Instructor/Lesson/Add" class="nav-link">
                                         <p>Add Lesson</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="/Instructor/ListLessons" class="nav-link">
+                                    <a href="/Instructor/Lesson/List" class="nav-link">
+                                        <p>List Lessons</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item menu-open">
+                            <a href="#" class="nav-link active">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>
+                                    Quiz
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="/Instructor/Add" class="nav-link">
+                                        <p>Add Quiz</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/Instructor/List" class="nav-link">
                                         <p>List Lessons</p>
                                     </a>
                                 </li>
@@ -367,6 +377,8 @@
     <script src="~/js/admin/demo.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="~/js/admin/pages/dashboard.js"></script>
+
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>

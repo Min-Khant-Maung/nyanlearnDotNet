@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using nyanlearnDotNet.Models;
 using nyanlearnDotNet.Models.DAO;
 using nyanlearnDotNet.Models.ViewModel;
@@ -13,28 +14,36 @@ using System.Threading.Tasks;
 
 namespace nyanlearnDotNet.Controllers
 {
-    // [Authorize]
+    [Authorize]
+    [Route("Student")]
     public class StudentController : Controller
     {
 
         private readonly ApplicationDbContext _applicationDbContext;
         private readonly UserManager<IdentityUser> _usermanager;
+        private readonly ILogger<StudentController> _logger;
 
         private  string CurrentUserId;
         private  string CurrentStudentId;
 
-        public StudentController(ApplicationDbContext applicationDbContext, UserManager<IdentityUser> userManager)
+        public StudentController(ApplicationDbContext applicationDbContext, UserManager<IdentityUser> userManager,ILogger<StudentController> logger)
         {
             _applicationDbContext = applicationDbContext;
             _usermanager = userManager;
+            _logger = logger;
         }
         public IActionResult Index()
         {
+             CurrentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
+            var student = _applicationDbContext.Students.FirstOrDefault(i => i.UserId == CurrentUserId);
+            _logger.LogInformation(student.ImagePath);
+            ViewData["profileUrl"] = student.ImagePath;
             return View("~/Views/Student/Index.cshtml");
         }
 
 
         [Authorize(Roles = "student")]
+
         public IActionResult ListInstructors()
         {
             IList<InstructorViewModel> instructors = _applicationDbContext.Instructors.Select
@@ -57,6 +66,7 @@ namespace nyanlearnDotNet.Controllers
 
 
         [Authorize(Roles = "student")]
+        [Route("Course/All")]
         public IActionResult ListAllCourses()
         {
             IList<CourseViewModel> courses = _applicationDbContext.Courses.Select
@@ -64,7 +74,8 @@ namespace nyanlearnDotNet.Controllers
                 {
                     Id = t.Id,
                     Name = t.Name,
-                    Description = t.Description
+                    Description = t.Description,
+                    ImagePath    = t.ImagePath
                 }).ToList();
 
 
@@ -76,6 +87,7 @@ namespace nyanlearnDotNet.Controllers
 
 
         [Authorize(Roles = "student")]
+        [Route("Course/Enrolled")]
         public IActionResult EnrolledCourses()
         {
             CurrentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
@@ -87,8 +99,10 @@ namespace nyanlearnDotNet.Controllers
             .Where(enrollment => enrollment.StudentId == CurrentStudentId)
             .Select(enrollment => new CourseViewModel
                 {
+                Id = enrollment.Course.Id,
                 Name = enrollment.Course.Name,
-                Description = enrollment.Course.Description
+                Description = enrollment.Course.Description,
+                ImagePath   = enrollment.Course.ImagePath
                     }).ToList();
 
 
@@ -99,6 +113,7 @@ namespace nyanlearnDotNet.Controllers
 
 
         [Authorize(Roles = "student")]
+        [Route("Course/Enroll")]
         public IActionResult EnrollCourse(string courseId)
         {   
             

@@ -1,40 +1,42 @@
 <div class="content-wrapper">
     @model IList<PublicRegisterViewModel>
 
-        <h1>Public Register List</h1>
+        
 
-    @*<a href="/Teacher/Entry" class="btn btn-info" role="button">Create</a>*@
-    <table class="table">
-        <thead>
-            <tr>
-                <td>Name</td>
-                <td>Email</td>
-                <td>Father Name</td>
-                <td>NRC</td>
-                <td>DOB</td>
-                <td>Address</td>
-                <td>Phone</td>
+        <div style="width: 70%; margin:auto; padding:5% 0%;">
+            <h1>Public Register List</h1>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td>Name</td>
+                        <td>Email</td>
+                        <td>Father Name</td>
+                        <td>NRC</td>
+                        <td>DOB</td>
+                        <td>Address</td>
+                        <td>Phone</td>
 
-                <td>Action</td>
-                <td></td>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var t in Model)
-            {
-            <tr>
-                <td>@t.Name</td>
-                <td>@t.Email</td>
-                <td>@t.FatherName</td>
-                <td>@t.NRC</td>
-                <td>@t.DOB.ToString("yyyy-MM--dd")</td>
-                <td>@t.Address</td>
-                <td>@t.Phone</td>
+                        <td>Action</td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var t in Model)
+                    {
+                        <tr>
+                            <td>@t.Name</td>
+                            <td>@t.Email</td>
+                            <td>@t.FatherName</td>
+                            <td>@t.NRC</td>
+                            <td>@t.DOB.ToString("yyyy-MM--dd")</td>
+                            <td>@t.Address</td>
+                            <td>@t.Phone</td>
 
-                <td><a href="/Admin/BanPublicRegister?Id=@t.Id" class="btn btn-danger" role="button">Ban</a></td>
-                <td><a href="/Admin/ApprovePublicRegister?Id=@t.Id" class="btn btn-success" onclick="return confirm('Are you sure to delete this record?')">Approve</a></td>
-            </tr>
-            }
-        </tbody>
-    </table>
+                            <td><a href="/Admin/BanPublicRegister?Id=@t.Id" class="btn btn-danger" role="button">Ban</a></td>
+                            <td><a href="/Admin/ApprovePublicRegister?Id=@t.Id" class="btn btn-success" onclick="return confirm('Are you sure to delete this record?')">Approve</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
 </div>

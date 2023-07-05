@@ -18,6 +18,7 @@ namespace nyanlearnDotNet.Controllers
 {
 
     [Authorize]
+    [Route("Instructor")]
     public class InstructorController : Controller
     {
 
@@ -25,6 +26,7 @@ namespace nyanlearnDotNet.Controllers
         private readonly ILogger<InstructorController> _logger;
         private readonly ApplicationDbContext _applicationDbContext;
         private readonly UserManager<IdentityUser> _usermanager;
+       
 
         private  string CurrentUserId;
         private  string CurrentInstructorId;
@@ -49,7 +51,8 @@ namespace nyanlearnDotNet.Controllers
 
 
 
-         [Authorize(Roles = "instructor")]
+        [Authorize(Roles = "instructor")]
+        [Route("Course/Add")]
         public IActionResult AddCourse()
         {
             return View("~/Views/Instructor/AddCourse.cshtml");
@@ -57,6 +60,7 @@ namespace nyanlearnDotNet.Controllers
 
         // We need to fix this action to filter the courses by only current instructor.
         [Authorize(Roles = "instructor")]
+        [Route("Lesson/Add")]
         public IActionResult AddLesson()
         {
             IList<Course> courses = _applicationDbContext.Courses.ToList();
@@ -65,26 +69,22 @@ namespace nyanlearnDotNet.Controllers
         
 
         [Authorize(Roles = "instructor")]
+        [Route("Course/List")]
         public IActionResult ListCourses()
         {
 
                 CurrentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
                 var instructor = _applicationDbContext.Instructors.FirstOrDefault(i => i.UserId == CurrentUserId);
                 CurrentInstructorId = instructor.Id;
-                IList<String> courseIds=null;
-                IList<CourseViewModel> courses=null;
-                courseIds = _applicationDbContext.CourseInstructors
-                        .Where(ci => ci.InstructorId == CurrentInstructorId)
-                        .Select(ci => ci.CourseId)
-                        .ToList();
 
-                courses = _applicationDbContext.Courses
-                        .Where(c => courseIds.Contains(c.Id))
-                        .Select(course => new CourseViewModel { 
-                        Name = course.Name,
-                        Description = course.Description
-                        })
-                        .ToList();
+                var courses = _applicationDbContext.CourseLessons.Where(cl => cl.InstructorId == CurrentInstructorId).Select(
+                    cl=> new CourseViewModel{
+                        Id = cl.Course.Id,
+                        Name = cl.Course.Name,
+                        Description = cl.Course.Description,
+                        ImagePath = cl.Course.ImagePath,
+                    }
+                ).ToList();
 
 
 
@@ -96,22 +96,86 @@ namespace nyanlearnDotNet.Controllers
 
 
 
+        [Authorize(Roles = "instructor")]
+        [Route("Lesson/List")]
+        public IActionResult ListLessons()
+        {
 
- [Authorize(Roles = "instructor")]
+                CurrentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
+                var instructor = _applicationDbContext.Instructors.FirstOrDefault(i => i.UserId == CurrentUserId);
+                CurrentInstructorId = instructor.Id;
+
+                var lessons =  _applicationDbContext.CourseLessons
+            .Where(cl => cl.InstructorId == CurrentInstructorId).Select(
+                cl =>
+                new LessonViewModel {
+                    Id          = cl.Id,
+                    Name        = cl.Lesson.Name,
+                    Description = cl.Lesson.Description,
+                    CourseName  = cl.Course.Name,
+                    FilePath    = cl.Lesson.FilePath 
+                }
+            )
+            .ToList();
+
+                
+                return View("~/Views/Instructor/ListLessons.cshtml",lessons);
+        }
+
+        // [Authorize(Roles = "instructor")]
+        // public int FindNumberOfQuizs(string lessonId)
+        // {
+        //     var numberofquizs =  _applicationDbContext.Quizs.Where(q=> q.LessonId==lessonId).Count();            
+        //     _logger.LogInformation(numberofquizs.ToString());
+        //     return numberofquizs;
+        // }
+
+
+                
+        [Authorize(Roles = "instructor")]
+        [Route("Lesson/Delete/{lessonId}")]
+        public async Task<IActionResult> LessonDelete(string lessonId)
+        {
+            var lesson = await _applicationDbContext.Lessons.FindAsync(lessonId);
+
+            _applicationDbContext.Lessons.Remove(lesson);
+            _applicationDbContext.SaveChanges();//Updating  the record to the database
+            TempData["msg"] = "Delete process successed!!";
+            
+            return RedirectToAction("ListLessons");
+        }
+
+
+
+
+        [Authorize(Roles = "instructor")]
         [HttpPost]
+        [Route("Course/Add")]
         public IActionResult AddCourse(CourseViewModel courseViewModel)
         {
+
+             var generatedCourseId = Guid.NewGuid().ToString();
+            // Process the uploaded file
+            // For example, you can save it to a specific location or store it in a database
+            var fileName = Path.GetFileName(courseViewModel.Photo.FileName);
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads","course", generatedCourseId+fileName);
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                courseViewModel.Photo.CopyTo(fileStream);
+            }
 
                 CurrentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
                 var instructor = _applicationDbContext.Instructors.FirstOrDefault(i => i.UserId == CurrentUserId);
                 CurrentInstructorId = instructor.Id;
                 Course course = new Course();
                 //audit columns
-                var generatedCourseId = Guid.NewGuid().ToString();
+               
                 course.Id = generatedCourseId;
                 course.CreatedDate = DateTime.Now;
                 course.Name = courseViewModel.Name;
                 course.Description = courseViewModel.Description;
+                course.ImagePath   =  generatedCourseId+fileName;
                 course.InstructorId = CurrentInstructorId;
 
 
@@ -132,19 +196,42 @@ namespace nyanlearnDotNet.Controllers
         }
 
 
- [Authorize(Roles = "instructor")]
+        [Authorize(Roles = "instructor")]
         [HttpPost]
+        [Route("Lesson/Add")]
         public IActionResult AddLesson(LessonViewModel lessonViewModel)
         {
 
+                var generatedLessonId = Guid.NewGuid().ToString();
+                 
                 CurrentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
                 var instructor = _applicationDbContext.Instructors.FirstOrDefault(i => i.UserId == CurrentUserId);
+                var course     = _applicationDbContext.Courses.FirstOrDefault(i => i.Id == lessonViewModel.CourseId);
+                
                 CurrentInstructorId = instructor.Id;
+                var fileName = "";
 
                 
                 Lesson lesson = new Lesson();
                 //audit columns
-                var generatedLessonId = Guid.NewGuid().ToString();
+
+                 if (lessonViewModel.File == null)
+                  {
+                        lesson.FilePath = lessonViewModel.FilePath;
+                  }
+                  else
+                  {
+                        fileName = Path.GetFileName(lessonViewModel.File.FileName);
+                        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads","lesson", generatedLessonId+fileName);
+
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            lessonViewModel.File.CopyTo(fileStream);
+                        }
+                        lesson.CourseName = course.Name;
+                        lesson.FilePath = generatedLessonId+fileName;
+                  }
+
                 lesson.Id = generatedLessonId;
                 lesson.CreatedDate = DateTime.Now;
                 lesson.Name = lessonViewModel.Name;
@@ -165,35 +252,59 @@ namespace nyanlearnDotNet.Controllers
             _applicationDbContext.SaveChanges();//saving the record to the database
             return RedirectToAction("Index");
         }
-        //       public IActionResult UploadSuccess()
-        //     {
-        //         return View();
-        //     }
+
+    [Authorize(Roles = "instructor")]
+    [Route("Quiz/Add")]
+
+        public IActionResult AddQuiz()
+        {
+                  IList<CreateQuizViewModel> courselessons = _applicationDbContext.CourseLessons.Select(
+                cl => new CreateQuizViewModel
+                {
+                    CourseName = cl.Course.Name,
+                    CourseId = cl.Course.Id,
+                    LessonName = cl.Lesson.Name,
+                    LessonId = cl.Lesson.Id,
+                }
+            ).ToList();
+            return View("~/Views/Instructor/AddQuiz.cshtml",courselessons);
+        }
 
 
-        // [HttpPost]
-        // public IActionResult Index(IFormFile videoFile)
-        // {
-        //     if (videoFile != null && videoFile.Length > 0)
-        //     {
-        //         // Perform any necessary validation on the file (e.g., size, type)
+        [HttpPost]
+        [Authorize(Roles = "instructor")]
+        [Route("Quiz/Add")]
 
-        //         // Save the file to a desired location
-        //         // string filePath = Path.Combine("/", );
-        //          string projectRootPath = _webHostEnvironment.ContentRootPath;
-        //         _logger.LogInformation(projectRootPath);
-        //         using (var fileStream = new FileStream(projectRootPath + "/ "+videoFile.FileName, FileMode.Create))
-        //         {
-        //             videoFile.CopyTo(fileStream);
-        //         }
+        public IActionResult AddQuiz(CreateQuizViewModel createQuizViewModel)
+        {
+            
+            Quiz quiz = new Quiz();
+            quiz.Id =  Guid.NewGuid().ToString();
+            quiz.LessonId = createQuizViewModel.LessonId;
 
-        //         // Additional processing or redirect to a success page
-        //         return RedirectToAction("UploadSuccess");
-        //     }
+            quiz.Question = createQuizViewModel.Question;
+            quiz.Option1 = createQuizViewModel.Option1;
+            quiz.Option2 = createQuizViewModel.Option2;
+            quiz.Option3 = createQuizViewModel.Option3;
+            quiz.Option4 = createQuizViewModel.Option4;
 
-        //     // If no file is uploaded or an error occurs, display an error message
-        //     ModelState.AddModelError("", "Please choose a video file to upload.");
-        //     return RedirectToAction("Index");
-        // }
+            quiz.Answer = createQuizViewModel.Answer;
+
+
+            _applicationDbContext.Quizs.Add(quiz);
+            _applicationDbContext.SaveChanges();
+
+
+
+    
+
+            return RedirectToAction("index");
+        }
+
+
+
+
+
+
     }
 }

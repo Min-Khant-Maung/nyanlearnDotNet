@@ -11,7 +11,21 @@ namespace nyanlearnDotNet.Models
     public class CourseLessons:BaseEntity
     {
         public string CourseId { get; set; }
+
+        [ForeignKey("CourseId")]
+        public virtual Course Course { get; set; }
+
+
+
         public string LessonId { get; set; }
+        
+        [ForeignKey("LessonId")]
+        public virtual Lesson Lesson { get; set; }
+
+
         public string InstructorId { get; set; }
+        
+        [ForeignKey("InstructorId")]
+        public virtual Instructor Instructor { get; set; }
     }
 }

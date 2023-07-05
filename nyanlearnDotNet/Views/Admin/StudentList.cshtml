@@ -1,43 +1,61 @@
 ﻿<div class="content-wrapper">
-    @model IList<StudentViewModel>
+    <div style="width: 70%; margin:auto; padding:5% 0%;">
+        @model IList<StudentViewModel>
 
-    <h1>Student List</h1>
-
-    @*<a href="/Teacher/Entry" class="btn btn-info" role="button">Create</a>*@
-    <table class="table">
-        <thead>
-            <tr>
-                <td>Name</td>
-                <td>Email</td>
-                <td>Father Name</td>
-                <td>NRC</td>
-                <td>DOB</td>
-                <td>Address</td>
-                <td>Phone</td>
-                <td>IsApproved</td>
-
-
-                <td>Action</td>
-                <td></td>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var t in Model)
+        <h1>Student List</h1>
+        @if (TempData["msg"] != null)
             {
-            <tr>
-                <td>@t.Name</td>
-                <td>@t.Email</td>
-                <td>@t.FatherName</td>
-                <td>@t.NRC</td>
-                <td>@t.DOB.ToString("yyyy-MM--dd")</td>
-                <td>@t.Address</td>
-                <td>@t.Phone</td>
-                <td>@t.IsApproved</td>
-
-                <td><a href="/Admin/Edit?Id=@t.Id" class="btn btn-success" role="button">Edit</a></td>
-                <td><a href="/Admin/Delete?Id=@t.Id" class="btn btn-danger" onclick="return confirm('Are you sure to delete this record?')">Delete</a></td>
-            </tr>
+                <div class="alert alert-success" id="alertMessage">
+                    @TempData["msg"]
+                </div>
             }
-        </tbody>
-    </table>
+
+        @*<a href="/Teacher/Entry" class="btn btn-info" role="button">Create</a>*@
+        <table class="table">
+            <thead>
+                <tr>
+                    <td>Name</td>
+                    <td>Email</td>
+                    <td>Father Name</td>
+                    <td>NRC</td>
+                    <td>DOB</td>
+                    <td>Address</td>
+                    <td>Phone</td>
+                    <td>IsApproved</td>
+                    <td>Profile Picture</td>
+
+
+                    <td>Action</td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var t in Model)
+                {
+                <tr>
+                    <td>@t.Name</td>
+                    <td>@t.Email</td>
+                    <td>@t.FatherName</td>
+                    <td>@t.NRC</td>
+                    <td>@t.DOB.ToString("yyyy-MM--dd")</td>
+                    <td>@t.Address</td>
+                    <td>@t.Phone</td>
+                    <td>@t.IsApproved</td>
+                    <td><img src="~/uploads/profile/@t.ImagePath" alt="" style="width: 80px;border-radius:50%"></td>
+
+                    <td><a href="/Admin/EditStudent?studentId=@t.Id" class="btn btn-success" role="button">Edit</a></td>
+                    <td><a href="/Admin/StudentDelete?studentId=@t.Id" class="btn btn-danger" onclick="return confirm('Are you sure to delete this student?')">Delete</a></td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
+<script>
+     var alertMessage = document.getElementById('alertMessage');
+    
+    // Hide the alert message after 2 seconds
+    setTimeout(function() {
+        alertMessage.style.display = 'none';
+    }, 2000); // 2000 milliseconds = 2 seconds
+</script>

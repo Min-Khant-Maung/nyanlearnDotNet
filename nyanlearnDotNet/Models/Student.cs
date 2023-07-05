@@ -20,6 +20,7 @@ namespace nyanlearnDotNet.Models
         public string Phone { get; set; }
         public string FatherName { get; set; }
 
+        public string ImagePath { get; set; }
         public bool IsApproved { get; set; }
 
         public string UserId { get; set; }

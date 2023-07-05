@@ -5,6 +5,7 @@ using System.Data;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
 
 namespace nyanlearnDotNet.Models
 {
@@ -18,5 +19,9 @@ namespace nyanlearnDotNet.Models
         public string Address { get; set; }
         public string Phone { get; set; }
         public string FatherName { get; set; }
+
+        public string ImagePath { get;set; }
+
+        public IFormFile Photo { get;set; }
     }
 }
