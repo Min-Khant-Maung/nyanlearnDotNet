@@ -49,6 +49,28 @@ namespace nyanlearnDotNet.Controllers
             return View("~/Views/Instructor/Index.cshtml");
         }
 
+        [Authorize(Roles = "instructor")]
+        [Route("Student/List")]
+        public IActionResult ListStudents()
+        {
+            IList<StudentViewModel> stus = _applicationDbContext.Students.Select
+                (s => new StudentViewModel
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    DOB = s.DOB,
+                    Email = s.Email,
+                    NRC = s.NRC,
+                    Address = s.Address,
+                    Phone = s.Phone,
+                    FatherName = s.FatherName,
+                    ImagePath  = s.ImagePath
+                }).ToList();
+
+
+            return View("~/Views/Instructor/StudentList.cshtml", stus);
+        }
+
 
 
         [Authorize(Roles = "instructor")]
@@ -72,27 +94,22 @@ namespace nyanlearnDotNet.Controllers
         [Route("Course/List")]
         public IActionResult ListCourses()
         {
-
-                CurrentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
-                var instructor = _applicationDbContext.Instructors.FirstOrDefault(i => i.UserId == CurrentUserId);
+            CurrentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var instructor = _applicationDbContext.Instructors.FirstOrDefault(i => i.UserId == CurrentUserId);
                 CurrentInstructorId = instructor.Id;
-
-                var courses = _applicationDbContext.CourseLessons.Where(cl => cl.InstructorId == CurrentInstructorId).Select(
-                    cl=> new CourseViewModel{
-                        Id = cl.Course.Id,
-                        Name = cl.Course.Name,
-                        Description = cl.Course.Description,
-                        ImagePath = cl.Course.ImagePath,
-                    }
-                ).ToList();
-
+             IList<CourseViewModel> courses = _applicationDbContext.Courses.Where(c => c.InstructorId==CurrentInstructorId).Select
+                (t => new CourseViewModel
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                    Description = t.Description,
+                    ImagePath    = t.ImagePath
+                }).ToList();
 
 
 
-
-
-            return View("~/Views/Instructor/ListCourses.cshtml",courses);
-        }
+            return View("~/Views/Instructor/ListCourses.cshtml", courses);
+  }
 
 
 
@@ -133,7 +150,7 @@ namespace nyanlearnDotNet.Controllers
 
                 
         [Authorize(Roles = "instructor")]
-        [Route("Lesson/Delete/{lessonId}")]
+        [Route("Lesson/Delete")]
         public async Task<IActionResult> LessonDelete(string lessonId)
         {
             var lesson = await _applicationDbContext.Lessons.FindAsync(lessonId);
@@ -202,6 +219,10 @@ namespace nyanlearnDotNet.Controllers
         public IActionResult AddLesson(LessonViewModel lessonViewModel)
         {
 
+
+
+
+
                 var generatedLessonId = Guid.NewGuid().ToString();
                  
                 CurrentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
@@ -228,7 +249,7 @@ namespace nyanlearnDotNet.Controllers
                         {
                             lessonViewModel.File.CopyTo(fileStream);
                         }
-                        lesson.CourseName = course.Name;
+                        
                         lesson.FilePath = generatedLessonId+fileName;
                   }
 
@@ -236,6 +257,14 @@ namespace nyanlearnDotNet.Controllers
                 lesson.CreatedDate = DateTime.Now;
                 lesson.Name = lessonViewModel.Name;
                 lesson.Description = lessonViewModel.Description;
+                lesson.CourseId = lessonViewModel.CourseId;
+
+
+
+
+
+
+                lesson.CourseName = course.Name;
 
 
                 CourseLessons courseLesson = new CourseLessons();
@@ -243,6 +272,11 @@ namespace nyanlearnDotNet.Controllers
                 courseLesson.LessonId = generatedLessonId;
                 courseLesson.CourseId = lessonViewModel.CourseId;
                 courseLesson.InstructorId = CurrentInstructorId;
+
+
+                //Adding the record Students DBSet
+                _applicationDbContext.Lessons.Add(lesson);
+                _applicationDbContext.CourseLessons.Add(courseLesson);
 
 
                 //Adding the record Students DBSet

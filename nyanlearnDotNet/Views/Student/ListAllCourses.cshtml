@@ -1,31 +1,25 @@
 ﻿<div class="content-wrapper">
     @model IList<CourseViewModel>
 
-    <h1>List All Courses</h1>
-
-    @*<a href="/Teacher/Entry" class="btn btn-info" role="button">Create</a>*@
-    <table class="table">
-        <thead>
-            <tr>
-                <td>Name</td>
-                <td>Description</td>
+   <div style="padding:3%">
+     <h1 style="margin-bottom: 50px;">Explored Courses</h1>
 
 
-                <td>Action</td>
-                <td></td>
-            </tr>
-        </thead>
-        <tbody>
             @foreach (var t in Model)
             {
-                <tr>
-                    <td>@t.Name</td>
-                    <td>@Html.Raw(t.Description)</td>
+                <div class="card" style="width: 18rem;">
+                    <img src="~/uploads/course/@t.ImagePath" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">@t.Name</h5>
+                        <p class="card-text">@Html.Raw(t.Description)</p>
+                        <a href="/Student/Course/Enroll?courseId=@t.Id" class="btn btn-primary">Enroll</a>
+                    </div>
+                </div>
 
-                    <td><a href="/Student/Edit?courseId=@t.Id" class="btn btn-success" role="button">Edit</a></td>
-                    <td><a href="/Student/EnrollCourse?courseId=@t.Id" class="btn btn-danger" onclick="return confirm('Are you sure to ehroll this course?')">Enroll</a></td>
-                </tr>
             }
-        </tbody>
-    </table>
+   </div>
+
+
+
+
 </div>

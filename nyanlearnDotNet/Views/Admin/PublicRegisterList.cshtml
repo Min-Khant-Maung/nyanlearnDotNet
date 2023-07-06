@@ -32,8 +32,8 @@
                             <td>@t.Address</td>
                             <td>@t.Phone</td>
 
-                            <td><a href="/Admin/BanPublicRegister?Id=@t.Id" class="btn btn-danger" role="button">Ban</a></td>
-                            <td><a href="/Admin/ApprovePublicRegister?Id=@t.Id" class="btn btn-success" onclick="return confirm('Are you sure to delete this record?')">Approve</a></td>
+                            <td><a href="/Admin/PublicRegister/Delete?Id=@t.Id" class="btn btn-danger" role="button">Ban</a></td>
+                            <td><a href="/Admin/PublicRegister/Approve?Id=@t.Id" class="btn btn-success" onclick="return confirm('Are you sure to approve this record?')">Approve</a></td>
                         </tr>
                     }
                 </tbody>

@@ -1,4 +1,4 @@
-﻿<div class="content-wrapper">
+<div class="content-wrapper">
     <div style="width: 70%; margin:auto; padding:5% 0%;">
         @model IList<StudentViewModel>
 
@@ -41,8 +41,8 @@
                     <td>@t.Phone</td>
                     <td><img src="~/uploads/profile/@t.ImagePath" alt="" style="width: 80px;border-radius:50%"></td>
 
-                    <td><a href="/Admin/EditStudent?studentId=@t.Id" class="btn btn-success" role="button">Edit</a></td>
-                    <td><a href="/Admin/StudentDelete?studentId=@t.Id" class="btn btn-danger" onclick="return confirm('Are you sure to delete this student?')">Delete</a></td>
+                    <td><a href="/Instructor/EditStudent?studentId=@t.Id" class="btn btn-success" role="button">Edit</a></td>
+                    <td><a href="/Instructor/StudentDelete?studentId=@t.Id" class="btn btn-danger" onclick="return confirm('Are you sure to delete this student?')">Delete</a></td>
                 </tr>
                 }
             </tbody>

@@ -32832,6 +32832,22 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\course\75a98225-9bc6-4e4a-8508-bbeb19a1e7211887955046.png))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\course\afd62836-c60b-4a0d-b13f-b2e05e8375a4images.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>nyanlearnDotNet</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/nyanlearnDotNet</BasePath>
+      <RelativePath>uploads\course\afd62836-c60b-4a0d-b13f-b2e05e8375a4images.png</RelativePath>
+      <AssetKind></AssetKind>
+      <AssetMode></AssetMode>
+      <AssetRole></AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\course\afd62836-c60b-4a0d-b13f-b2e05e8375a4images.png))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\course\b1d194d2-c81f-4dd4-94d0-255250fbf526photo_2023-07-03_09-42-36.jpg))">
       <SourceType>Package</SourceType>
       <SourceId>nyanlearnDotNet</SourceId>
@@ -32847,6 +32863,38 @@
       <CopyToOutputDirectory></CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\course\b1d194d2-c81f-4dd4-94d0-255250fbf526photo_2023-07-03_09-42-36.jpg))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\course\cd0fe2da-3ec5-46df-a7d6-5d675893f32ep1.jpg))">
+      <SourceType>Package</SourceType>
+      <SourceId>nyanlearnDotNet</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/nyanlearnDotNet</BasePath>
+      <RelativePath>uploads\course\cd0fe2da-3ec5-46df-a7d6-5d675893f32ep1.jpg</RelativePath>
+      <AssetKind></AssetKind>
+      <AssetMode></AssetMode>
+      <AssetRole></AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\course\cd0fe2da-3ec5-46df-a7d6-5d675893f32ep1.jpg))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\course\f267d82e-a42e-46f6-bce3-da1fe24ef3005232032994.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>nyanlearnDotNet</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/nyanlearnDotNet</BasePath>
+      <RelativePath>uploads\course\f267d82e-a42e-46f6-bce3-da1fe24ef3005232032994.png</RelativePath>
+      <AssetKind></AssetKind>
+      <AssetMode></AssetMode>
+      <AssetRole></AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\course\f267d82e-a42e-46f6-bce3-da1fe24ef3005232032994.png))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\lesson\396d947f-c9d1-4686-bf6d-2dcba96aced6Surprise Mother Father! - Eh Bee Official (1).mp4))">
       <SourceType>Package</SourceType>
@@ -32880,6 +32928,38 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\lesson\7fc08263-c111-4193-85ad-2269b2753bb4841100316.png))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\profile\17b8b486-eabc-4f2a-a97c-9940e7839dbb1887955046.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>nyanlearnDotNet</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/nyanlearnDotNet</BasePath>
+      <RelativePath>uploads\profile\17b8b486-eabc-4f2a-a97c-9940e7839dbb1887955046.png</RelativePath>
+      <AssetKind></AssetKind>
+      <AssetMode></AssetMode>
+      <AssetRole></AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\profile\17b8b486-eabc-4f2a-a97c-9940e7839dbb1887955046.png))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\profile\2d41bbcc-17e8-45cc-8bf7-dc1e9613b1681887955046.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>nyanlearnDotNet</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/nyanlearnDotNet</BasePath>
+      <RelativePath>uploads\profile\2d41bbcc-17e8-45cc-8bf7-dc1e9613b1681887955046.png</RelativePath>
+      <AssetKind></AssetKind>
+      <AssetMode></AssetMode>
+      <AssetRole></AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\profile\2d41bbcc-17e8-45cc-8bf7-dc1e9613b1681887955046.png))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\profile\4010174b-c4db-49b4-958c-c456ccf69f71photo_2023-07-03_09-42-36.jpg))">
       <SourceType>Package</SourceType>
       <SourceId>nyanlearnDotNet</SourceId>
@@ -32895,6 +32975,54 @@
       <CopyToOutputDirectory></CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\profile\4010174b-c4db-49b4-958c-c456ccf69f71photo_2023-07-03_09-42-36.jpg))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\profile\46ca3adb-dfde-4bc8-b652-6993da3622bf5232032994.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>nyanlearnDotNet</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/nyanlearnDotNet</BasePath>
+      <RelativePath>uploads\profile\46ca3adb-dfde-4bc8-b652-6993da3622bf5232032994.png</RelativePath>
+      <AssetKind></AssetKind>
+      <AssetMode></AssetMode>
+      <AssetRole></AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\profile\46ca3adb-dfde-4bc8-b652-6993da3622bf5232032994.png))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\profile\89c08179-cff2-43d6-9919-77dd3f38f30b1276863082.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>nyanlearnDotNet</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/nyanlearnDotNet</BasePath>
+      <RelativePath>uploads\profile\89c08179-cff2-43d6-9919-77dd3f38f30b1276863082.png</RelativePath>
+      <AssetKind></AssetKind>
+      <AssetMode></AssetMode>
+      <AssetRole></AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\profile\89c08179-cff2-43d6-9919-77dd3f38f30b1276863082.png))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\profile\e8ee3079-45f5-4fd4-b651-bc9581fdf5d01887955046.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>nyanlearnDotNet</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/nyanlearnDotNet</BasePath>
+      <RelativePath>uploads\profile\e8ee3079-45f5-4fd4-b651-bc9581fdf5d01887955046.png</RelativePath>
+      <AssetKind></AssetKind>
+      <AssetMode></AssetMode>
+      <AssetRole></AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\profile\e8ee3079-45f5-4fd4-b651-bc9581fdf5d01887955046.png))</OriginalItemSpec>
     </StaticWebAsset>
   </ItemGroup>
 </Project>

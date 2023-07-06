@@ -1,7 +1,8 @@
 ﻿<div class="content-wrapper">
     @model IList<CourseViewModel>
 
-    <h1>List All Courses</h1>
+   <div style="padding:3%">
+     <h1 style="margin-bottom: 50px;">Enrolled Courses</h1>
 
 
             @foreach (var t in Model)
@@ -11,11 +12,12 @@
                     <div class="card-body">
                         <h5 class="card-title">@t.Name</h5>
                         <p class="card-text">@Html.Raw(t.Description)</p>
-                        <a href="/Student/Learn/?courseId=@t.Id" class="btn btn-primary">Let's study</a>
+                        <a href="/Student/Course/Learn?courseId=@t.Id" class="btn btn-primary">Let's study</a>
                     </div>
                 </div>
 
             }
+   </div>
 
 
 

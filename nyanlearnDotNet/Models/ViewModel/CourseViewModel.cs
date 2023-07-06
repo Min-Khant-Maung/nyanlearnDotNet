@@ -15,6 +15,7 @@ namespace nyanlearnDotNet.Models.ViewModel
         public string Description { get; set; }
 
         public string ImagePath { get; set; }
+        public virtual IList<Lesson> Lessons { get; set; }
 
         public IFormFile Photo { get;set; }
     }

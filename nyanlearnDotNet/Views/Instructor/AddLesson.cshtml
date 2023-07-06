@@ -5,7 +5,7 @@
     }
     <div style="width: 70%; margin:auto; padding:5% 0%;">
         <h1>Create Lesson</h1>
-        <form action="/Instructor/AddLesson" method="POST" enctype="multipart/form-data">
+        <form action="/Instructor/Lesson/Add" method="POST" enctype="multipart/form-data">
 
 
             <div class="mb-3 teacher-inputs">
@@ -34,6 +34,10 @@
                     <input type="file" class="form-control" name="File">
                 </div>
 
+            </div>
+
+            <div style="display:none;">
+                <input type="text" name="CourseName">
             </div>
 
 
@@ -89,6 +93,7 @@
     for (let i = 0; i <= data.length; i++) {
         courses_dd.innerHTML += `<option value="${data[i].Id}">${data[i].Name}</option>`;
     }
+
 
 
 

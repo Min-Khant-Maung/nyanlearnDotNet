@@ -2,12 +2,12 @@
 
 namespace nyanlearnDotNet.Migrations
 {
-    public partial class updatelessonmodelv2 : Migration
+    public partial class updatedlessonmodel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "FilePath",
+                name: "CourseId",
                 table: "Lesson",
                 type: "nvarchar(max)",
                 nullable: true);
@@ -16,7 +16,7 @@ namespace nyanlearnDotNet.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "FilePath",
+                name: "CourseId",
                 table: "Lesson");
         }
     }

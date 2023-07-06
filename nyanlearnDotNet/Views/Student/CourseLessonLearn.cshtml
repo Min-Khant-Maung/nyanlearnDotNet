@@ -1,0 +1,55 @@
+<div class="content-wrapper">
+    @model LessonViewModel;
+    @using System.Text.RegularExpressions;
+
+    @{
+        var linkRegex = new Regex(@"^(http|https|ftp)://.*$");
+    }
+
+
+    <div style="padding:3%">
+     <h1 style="margin-bottom: 50px;">@Model.Name</h1> 
+     <div>@Html.Raw(Model.Description)</div>
+
+     <div style="width:60%">
+                            @if (Model.FilePath != null && linkRegex.IsMatch(Model.FilePath))
+                    {
+                       
+                         if (Regex.IsMatch(Model.FilePath, @"\.(jpg|jpeg|png|gif)$", RegexOptions.IgnoreCase))
+                        {
+                            <img src="@Model.FilePath" class="card-img-top" alt="...">
+                        }
+                        else
+                        {
+                              <iframe class="embed-responsive-item" src="@Model.FilePath" allowfullscreen></iframe>
+                        }
+
+                    }
+                    else @if (Model.FilePath != null && !linkRegex.IsMatch(Model.FilePath))
+                    {
+                        if (Regex.IsMatch(Model.FilePath, @"\.(mp4|avi|mov|wmv|flv|mkv)$", RegexOptions.IgnoreCase))
+                        {
+                            <video controls class="embed-responsive-item">
+                                <source src="~/uploads/lesson/@Model.FilePath">
+                            </video>
+                        }
+                        else if (Regex.IsMatch(Model.FilePath, @"\.(jpg|jpeg|png|gif)$", RegexOptions.IgnoreCase))
+                        {
+                            <img src="~/uploads/lesson/@Model.FilePath" class="card-img-top" alt="...">
+                        }
+                    }
+     </div>
+    
+    
+    <a href="/Student/Course/Lesson/Quiz?lessonid=@Model.Id" class="btn btn-primary">Take Quiz</a>
+
+
+   </div>
+            
+
+
+</div>
+
+
+
+   

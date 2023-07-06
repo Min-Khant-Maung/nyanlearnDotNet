@@ -1,0 +1,15 @@
+<div class="content-wrapper">
+    @model IList<LessonViewModel>
+   <div style="padding:3%">
+     <h1 style="margin-bottom: 50px;">dsafdsaf</h1>
+     <ol>
+         @foreach (var t in Model)
+         {
+            <li><a href="/Student/Course/Lesson/Learn?lessonId=@t.Id">@t.Name</a></li>
+         }
+      
+       
+     </ol>
+        
+   </div>
+</div>

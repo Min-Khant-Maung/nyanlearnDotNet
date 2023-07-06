@@ -18,6 +18,8 @@ namespace nyanlearnDotNet.Models
 
         public string FilePath { get;set; }
 
+        public string CourseId { get;set; }
+
         public virtual IList<Course> Courses { get; set; }
     }
 }

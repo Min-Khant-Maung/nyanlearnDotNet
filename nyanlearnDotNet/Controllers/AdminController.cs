@@ -17,7 +17,8 @@ using System.IO;
 
 namespace nyanlearnDotNet.Controllers
 {
-    // [Authorize]
+    [Authorize]
+    [Route("Admin")]
     public class AdminController : Controller
     {
 
@@ -40,6 +41,8 @@ namespace nyanlearnDotNet.Controllers
             _emailSender = emailSender;
             _webHostEnvironment = webHostEnvironment;
         }
+
+
         public IActionResult Index()
         {
             return View("~/Views/Admin/Index.cshtml");
@@ -48,6 +51,7 @@ namespace nyanlearnDotNet.Controllers
 
         
         [Authorize(Roles = "admin")]
+        [Route("PublicRegister/List")]
         public IActionResult ListPublicRegister()
         {
             IList<PublicRegisterViewModel> publicRegisters = _applicationDbContext.PublicRegisters.Select
@@ -70,6 +74,7 @@ namespace nyanlearnDotNet.Controllers
 
         
         [Authorize(Roles = "admin")]
+        [Route("Student/Delete{studentId}")]
         public async Task<IActionResult> StudentDelete(string studentId)
         {
             var student = _applicationDbContext.Students.Find(studentId);
@@ -88,6 +93,7 @@ namespace nyanlearnDotNet.Controllers
 
 
         [Authorize(Roles = "admin")]
+        [Route("PublicRegister/Delete")]
         public IActionResult BanPublicRegister(string id)
         {
             _logger.LogInformation(id);
@@ -103,6 +109,7 @@ namespace nyanlearnDotNet.Controllers
 
 
         [Authorize(Roles = "admin")]
+        [Route("PublicRegister/Approve")]
         public async Task<IActionResult> ApprovePublicRegister(string id)
         {
 
@@ -175,6 +182,7 @@ namespace nyanlearnDotNet.Controllers
         }
 
         [Authorize(Roles = "admin")]
+        [Route("Student/List")]
         public IActionResult ListStudents()
         {
             IList<StudentViewModel> stus = _applicationDbContext.Students.Select
@@ -188,8 +196,7 @@ namespace nyanlearnDotNet.Controllers
                     Address = s.Address,
                     Phone = s.Phone,
                     FatherName = s.FatherName,
-                    ImagePath  = s.ImagePath,
-                    IsApproved = s.IsApproved
+                    ImagePath  = s.ImagePath
                 }).ToList();
 
 
@@ -198,12 +205,14 @@ namespace nyanlearnDotNet.Controllers
 
 
         [Authorize(Roles = "admin")]
+        [Route("Student/Add")]
         public IActionResult AddStudent()
         {
             return View("~/Views/Admin/StudentRegForm.cshtml");
         }
 
         [Authorize(Roles = "admin")]
+        [Route("Student/Add")]
         [HttpPost]
         public async Task<IActionResult> AddStudent(StudentViewModel studentviewmodel)
         {
@@ -238,6 +247,7 @@ namespace nyanlearnDotNet.Controllers
 
 
         [Authorize(Roles = "admin")]
+        [Route("Instructor/List")]
         public IActionResult ListInstructors()
         {
             IList<InstructorViewModel> instructors = _applicationDbContext.Instructors.Select
@@ -260,6 +270,7 @@ namespace nyanlearnDotNet.Controllers
 
 
         [Authorize(Roles = "admin")]
+             [Route("Instructor/Add")]
         public IActionResult AddInstructor()
         {
             IList<NRCViewModel> nrcs = _applicationDbContext.NRCs.Select
@@ -272,6 +283,7 @@ namespace nyanlearnDotNet.Controllers
         }
 
         [Authorize(Roles = "admin")]
+             [Route("Instructor/Add")]
         [HttpPost]
         public async Task<IActionResult> AddInstructor(InstructorViewModel instructorviewmodel)
         {

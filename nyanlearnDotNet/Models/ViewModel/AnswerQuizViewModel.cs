@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 
-namespace nyanlearnDotNet.Models
+namespace nyanlearnDotNet.Models.ViewModel
 {
-    [Table("Quiz")]
-    public class Quiz : BaseEntity
+    public class AnswerQuizViewModel: BaseEntity
     {
-
         public string Question { get; set; }
 
         public string Option1 { get; set;}
@@ -21,12 +19,9 @@ namespace nyanlearnDotNet.Models
         public string Option3 { get; set;}
 
         public string Option4 { get; set;}
-        
+
+        public string SelectedOption { get; set;}
         public string Answer { get; set; }
-
-        public string LessonId { get; set; }
-
-        [ForeignKey("LessonId")]
-        public virtual Lesson Lesson { get; set; }
     }
 }
+

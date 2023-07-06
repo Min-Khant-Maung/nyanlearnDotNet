@@ -197,6 +197,10 @@ C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Course\Index.cshtml.g.cs
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Shared\_LayoutCourse.cshtml.g.cs
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Instructor\AddQuiz.cshtml.g.cs
+C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Student\Quiz.cshtml.g.cs
+C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Instructor\StudentList.cshtml.g.cs
+C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Student\CourseLearn.cshtml.g.cs
+C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Student\CourseLessonLearn.cshtml.g.cs
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\staticwebassets\nyanlearnDotNet.StaticWebAssets.Pack.cache
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\staticwebassets\msbuild.nyanlearnDotNet.Microsoft.AspNetCore.StaticWebAssets.props
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\staticwebassets\msbuild.build.nyanlearnDotNet.props

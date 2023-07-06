@@ -42,28 +42,6 @@ namespace nyanlearnDotNet.Controllers
         }
 
 
-        [Authorize(Roles = "student")]
-
-        public IActionResult ListInstructors()
-        {
-            IList<InstructorViewModel> instructors = _applicationDbContext.Instructors.Select
-                (t => new InstructorViewModel
-                {
-                    Name = t.Name,
-                    Email = t.Email,
-                    FatherName = t.FatherName,
-                    Position = t.Position,
-                    DOB = t.DOB,
-                    NRC = t.NRC,
-                    Address = t.Address,
-                    Phone = t.Phone
-                }).ToList();
-
-
-
-            return View("~/Views/Student/InstructorList.cshtml", instructors);
-        }
-
 
         [Authorize(Roles = "student")]
         [Route("Course/All")]
@@ -131,7 +109,70 @@ namespace nyanlearnDotNet.Controllers
             return RedirectToAction("EnrolledCourses");
         }
 
+        [Authorize(Roles = "student")]
+        [Route("Course/Lesson/Quiz")]
+
+        public IActionResult AnswerQuiz(string lessonId)
+        {
+            var quizs = _applicationDbContext.Quizs.Where(q=>q.LessonId==lessonId).Select(q=> new AnswerQuizViewModel
+            {
+                Question = q.Question,
+                Option1 = q.Option1,
+                Option2 = q.Option2,
+                Option3 = q.Option3,
+                Option4 = q.Option4,
+                Answer = q.Answer,
+            }).ToList();
+
+            TempData["lessonId"] = lessonId;
+            return View("~/Views/Student/Quiz.cshtml",quizs);
+        }
+
+        [Authorize(Roles = "student")]
+        [Route("Course/Learn")]
+
+        public IActionResult CourseLearn(string courseId)
+        {
+            var lessons = _applicationDbContext.Lessons.Where(l=> l.CourseId==courseId).Select(
+                l=> new LessonViewModel
+                {
+                    Name = l.Name,
+                    Id = l.Id,
+                    CourseName = l.CourseName,
+                    CourseId = l.CourseId,
+                }
+            ).ToList();
+            return View("~/Views/Student/CourseLearn.cshtml",lessons);
+        }
 
 
+
+
+        [Authorize(Roles = "student")]
+        [Route("Course/Lesson/Learn")]
+
+        public IActionResult LessonLearn(string lessonId)
+        {
+            var l = _applicationDbContext.Lessons.FirstOrDefault(l=> l.Id==lessonId);
+            LessonViewModel lesson = new LessonViewModel();
+
+                    lesson.Name = l.Name;
+                    lesson.Id = l.Id;
+                    lesson.Description = l.Description;
+                    lesson.CourseName = l.CourseName;
+                    lesson.FilePath = l.FilePath;
+
+
+            return View("~/Views/Student/CourseLessonLearn.cshtml",lesson);
+        }
+
+         [Authorize(Roles = "student")]
+        [Route("Course/Lesson/Quiz/Result")]
+        
+        public IActionResult CheckQuiz(IList<AnswerQuizViewModel>answerQuizViewModels)
+        {
+            var result = answerQuizViewModels;
+            return RedirectToAction("index");
+        }
     }
 }

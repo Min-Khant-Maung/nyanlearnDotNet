@@ -1,0 +1,79 @@
+<div class="content-wrapper">
+    @model IList<AnswerQuizViewModel>
+    @{
+        var lessonId = @TempData["lessonId"];
+    }
+
+    <h1>List All Courses</h1>
+
+
+         @for (int i = 0; i < Model.Count; i++)
+        {          
+                <div id="quizQuestion" style="margin: 30px;">
+                     <input type="hidden" name="QuizId" value="@Model[i].Id" />
+                    <div style="display: flex;  justify-content: space-between;">
+                        <div style="margin-left:2%">@Html.Raw(@Model[i].Question)</div>
+                        <p style="border:1px solid rgb(55, 166, 206);padding:2px;border-radius:3px">1 point</p>
+                    </div>
+                    <div id="">
+
+
+                        <ol>
+                            <li>
+                                <div class="form-check">
+                            <input class="form-check-input" type="radio" id="flexRadioDefault1" name="SelectedOption" value="Option1">
+                            <label class="form-check-label" for="flexRadioDefault1">
+                                @Model[i].Option1
+                            </label>
+                                </div>
+                            </li>
+
+
+                            <li>
+                                                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="SelectedOption" id="flexRadioDefault2" value="Option2">
+                            <label class="form-check-label" for="flexRadioDefault2">
+                                 @Model[i].Option2
+                            </label>
+                        </div>
+                            </li>
+
+
+                            <li>
+                                 <div class="form-check">
+                            <input class="form-check-input" type="radio" name="SelectedOption" id="flexRadioDefault2" value="Option3">
+                            <label class="form-check-label" for="flexRadioDefault2">
+                                 @Model[i].Option3
+                            </label>
+                        </div>
+                            </li>
+
+
+                            <li>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="SelectedOption" id="flexRadioDefault2" value="Option4">
+                            <label class="form-check-label" for="flexRadioDefault2">
+                                 @Model[i].Option4
+                            </label>
+                        </div>
+                            </li>
+                        </ol>
+
+
+
+
+                       
+
+
+
+                    </div>
+                </div>
+
+            }
+
+
+     <a href="/Student/Course/Lesson/Quiz/Result?lessonid=@lessonId" class="btn btn-primary">Take Quiz</a>
+
+
+</div>
