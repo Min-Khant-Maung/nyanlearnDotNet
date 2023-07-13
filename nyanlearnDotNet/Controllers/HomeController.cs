@@ -8,7 +8,7 @@ using nyanlearnDotNet.Models;
 using nyanlearnDotNet.Models.DAO;
 using nyanlearnDotNet.Models.ViewModel;
 
-namespace testLayout.Controllers
+namespace nyanlearnDotNet.Controllers
 {
     public class HomeController : Controller
     {

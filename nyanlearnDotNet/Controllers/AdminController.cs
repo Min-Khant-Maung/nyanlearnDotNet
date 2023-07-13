@@ -177,7 +177,7 @@ namespace nyanlearnDotNet.Controllers
 
 
                 _applicationDbContext.SaveChanges();//Updating  the record to the database
-                TempData["msg"] = "Delete process successed!!";
+                TempData["msg"] = "Approve process successed!!";
             }
             return RedirectToAction("ListStudents");
         }
