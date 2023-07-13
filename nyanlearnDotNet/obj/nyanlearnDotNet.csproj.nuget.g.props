@@ -15,6 +15,18 @@
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
   </PropertyGroup>
+  <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Content Include="$(NuGetPackageRoot)select.htmltopdf.netcore\18.3.0\contentFiles\any\any\Select.Html.dep" Condition="Exists('$(NuGetPackageRoot)select.htmltopdf.netcore\18.3.0\contentFiles\any\any\Select.Html.dep')">
+      <NuGetPackageId>Select.HtmlToPdf.NetCore</NuGetPackageId>
+      <NuGetPackageVersion>18.3.0</NuGetPackageVersion>
+      <NuGetItemType>Content</NuGetItemType>
+      <Pack>false</Pack>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>Select.Html.dep</TargetPath>
+      <Private>True</Private>
+      <Link>Select.Html.dep</Link>
+    </Content>
+  </ItemGroup>
   <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <Import Project="$(NuGetPackageRoot)microsoft.entityframeworkcore.design\5.0.17\build\netcoreapp3.0\Microsoft.EntityFrameworkCore.Design.props" Condition="Exists('$(NuGetPackageRoot)microsoft.entityframeworkcore.design\5.0.17\build\netcoreapp3.0\Microsoft.EntityFrameworkCore.Design.props')" />
     <Import Project="$(NuGetPackageRoot)microsoft.aspnetcore.identity.ui\5.0.17\buildTransitive\Microsoft.AspNetCore.Identity.UI.props" Condition="Exists('$(NuGetPackageRoot)microsoft.aspnetcore.identity.ui\5.0.17\buildTransitive\Microsoft.AspNetCore.Identity.UI.props')" />

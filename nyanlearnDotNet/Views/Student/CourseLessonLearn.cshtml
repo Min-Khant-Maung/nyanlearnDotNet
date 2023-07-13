@@ -4,6 +4,7 @@
 
     @{
         var linkRegex = new Regex(@"^(http|https|ftp)://.*$");
+        var courseId   = @TempData["courseId"];
     }
 
 
@@ -41,7 +42,7 @@
      </div>
     
     
-    <a href="/Student/Course/Lesson/Quiz?lessonid=@Model.Id" class="btn btn-primary">Take Quiz</a>
+    <a href="/Student/Course/Lesson/Quiz?lessonId=@Model.Id&courseId=@courseId" class="btn btn-primary" style="margin-top: 2%;">Take Quiz</a>
 
 
    </div>

@@ -37,7 +37,7 @@ namespace nyanlearnDotNet.Controllers
              CurrentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
             var student = _applicationDbContext.Students.FirstOrDefault(i => i.UserId == CurrentUserId);
             _logger.LogInformation(student.ImagePath);
-            ViewData["profileUrl"] = student.ImagePath;
+            ViewBag.profileUrl = student.ImagePath;
             return View("~/Views/Student/Index.cshtml");
         }
 
@@ -92,30 +92,54 @@ namespace nyanlearnDotNet.Controllers
 
         [Authorize(Roles = "student")]
         [Route("Course/Enroll")]
-        public IActionResult EnrollCourse(string courseId)
+        public async Task<IActionResult> EnrollCourse(string courseId)
         {   
             
             CurrentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
-            var student = _applicationDbContext.Students.FirstOrDefault(i => i.UserId == CurrentUserId);
+            var student = await _applicationDbContext.Students.FirstOrDefaultAsync(i => i.UserId == CurrentUserId);
+
+
+            var enrolledCourse = await _applicationDbContext.Courses.Include(c => c.Lessons)
+                .FirstOrDefaultAsync(c => c.Id == courseId);
+
+         
+            
+            int currentCourseNumOfLessons = enrolledCourse.Lessons.Count;
+
+            var instructorId = enrolledCourse.InstructorId;
+
             CurrentStudentId = student.Id;
 
             Enrollment enrollment = new Enrollment();
             enrollment.Id = Guid.NewGuid().ToString();
+            enrollment.CreatedDate = DateTime.Now;
             enrollment.StudentId = CurrentStudentId;
             enrollment.CourseId  = courseId;
+            enrollment.numOfLessons = currentCourseNumOfLessons;
 
-            _applicationDbContext.Enrollments.Add(enrollment);
-            _applicationDbContext.SaveChanges();
+
+            CourseResult courseResult = new CourseResult();
+            courseResult.Id = Guid.NewGuid().ToString();
+            courseResult.CreatedDate = DateTime.Now;
+            courseResult.StudentId = CurrentStudentId;
+            courseResult.CourseId  = courseId;
+            courseResult.InstructorId  = instructorId;
+            courseResult.ResultPercentage = 0;
+
+            await _applicationDbContext.Enrollments.AddAsync(enrollment);
+            await _applicationDbContext.CourseResults.AddAsync(courseResult);
+            await _applicationDbContext.SaveChangesAsync();
             return RedirectToAction("EnrolledCourses");
         }
 
         [Authorize(Roles = "student")]
         [Route("Course/Lesson/Quiz")]
 
-        public IActionResult AnswerQuiz(string lessonId)
+        public IActionResult AnswerQuiz(string lessonId,string courseId)
         {
             var quizs = _applicationDbContext.Quizs.Where(q=>q.LessonId==lessonId).Select(q=> new AnswerQuizViewModel
             {
+                Id = q.Id,
                 Question = q.Question,
                 Option1 = q.Option1,
                 Option2 = q.Option2,
@@ -125,6 +149,8 @@ namespace nyanlearnDotNet.Controllers
             }).ToList();
 
             TempData["lessonId"] = lessonId;
+            TempData["courseId"] = courseId;
+            TempData["numOfQuizs"] = _applicationDbContext.Quizs.Where(q=>q.LessonId==lessonId).Count();
             return View("~/Views/Student/Quiz.cshtml",quizs);
         }
 
@@ -151,7 +177,7 @@ namespace nyanlearnDotNet.Controllers
         [Authorize(Roles = "student")]
         [Route("Course/Lesson/Learn")]
 
-        public IActionResult LessonLearn(string lessonId)
+        public IActionResult LessonLearn(string lessonId,string courseId)
         {
             var l = _applicationDbContext.Lessons.FirstOrDefault(l=> l.Id==lessonId);
             LessonViewModel lesson = new LessonViewModel();
@@ -162,17 +188,121 @@ namespace nyanlearnDotNet.Controllers
                     lesson.CourseName = l.CourseName;
                     lesson.FilePath = l.FilePath;
 
-
+            TempData["courseId"] = courseId;
             return View("~/Views/Student/CourseLessonLearn.cshtml",lesson);
         }
 
          [Authorize(Roles = "student")]
         [Route("Course/Lesson/Quiz/Result")]
         
-        public IActionResult CheckQuiz(IList<AnswerQuizViewModel>answerQuizViewModels)
+        public IActionResult CheckQuiz(string lessonId,string courseId,string totalMarks)
         {
-            var result = answerQuizViewModels;
-            return RedirectToAction("index");
+            CurrentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
+            var student = _applicationDbContext.Students.FirstOrDefault(i => i.UserId == CurrentUserId);
+            CurrentStudentId = student.Id;
+
+            LessonResult lessonResult = new LessonResult();
+            lessonResult.Id = Guid.NewGuid().ToString();
+            lessonResult.CreatedDate = DateTime.Now;
+            lessonResult.StudentId = CurrentStudentId;
+            lessonResult.LessonId = lessonId;
+            lessonResult.ResultPercentage = double.Parse(totalMarks);
+
+
+            //get current student'scourse total percentage
+            var currentPercentage = _applicationDbContext.CourseResults.FirstOrDefault(cr=> cr.CourseId==courseId && cr.StudentId==CurrentStudentId).ResultPercentage;
+            
+            
+          
+
+
+            //calculate num of leesons from course model beacuse we wanna calculate total result 
+            var course = _applicationDbContext.Courses
+                .Include(c => c.Lessons)
+                .FirstOrDefault(c => c.Id == courseId);
+            
+ 
+
+              // update current student'scourse total percentage
+            currentPercentage =(  currentPercentage +  double.Parse(totalMarks) );
+
+
+
+            // save data to course result table
+           
+            CourseResult courseResult       = new CourseResult();
+            courseResult.Id                 = Guid.NewGuid().ToString();
+            courseResult.StudentId          = CurrentStudentId;
+            courseResult.CourseId           = courseId;
+            courseResult.ResultPercentage   = currentPercentage;
+
+            _applicationDbContext.LessonResults.Add(lessonResult);
+
+            _applicationDbContext.SaveChanges(); 
+            return RedirectToAction("UpdateStudentResult",courseResult);
+        }
+
+
+
+
+         [Authorize(Roles = "student")]
+        [Route("Course/Lesson/Quiz/Result/UpdateDb")]
+        public IActionResult UpdateStudentResult(CourseResult courseResult)
+        {
+                var result = _applicationDbContext.CourseResults.FirstOrDefault(c => c.CourseId==courseResult.CourseId);
+                result.ResultPercentage =  courseResult.ResultPercentage;
+                _applicationDbContext.SaveChanges();
+                return RedirectToAction("EnrolledCourses");
+        }
+
+
+        [Authorize(Roles = "student")]
+        [Route("Course/Result")]
+        public async Task<IActionResult> ResultLesson()
+        {
+
+            CurrentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
+            var student = _applicationDbContext.Students.FirstOrDefault(i => i.UserId == CurrentUserId);
+            CurrentStudentId = student.Id;
+
+
+            IList<CourseResultPercentageViewModel> percentages = await _applicationDbContext.Enrollments.Where(
+                e => e.StudentId == CurrentStudentId
+            ).Select(
+                e => new CourseResultPercentageViewModel
+                {
+                    CourseId = e.CourseId,
+                    numOfLessons = e.numOfLessons
+                }
+            ).ToListAsync();
+
+                       
+
+            IList<CourseResultViewModel> courseresults = _applicationDbContext.CourseResults.Where(cr=>cr.StudentId==CurrentStudentId).Select
+                (cv => new CourseResultViewModel
+                {
+                    Course = cv.Course,
+                    CreatedDate = cv.CreatedDate,
+                    ResultPercentage =cv.ResultPercentage,
+                    Instructor = cv.Instructor
+                }).ToList();
+
+
+
+            IList<LessonResultViewModel> lessonresults = _applicationDbContext.LessonResults.Where(lr=>lr.StudentId==CurrentStudentId).Select
+                (s => new LessonResultViewModel
+                {
+                    Lesson = s.Lesson,
+                    CreatedDate = s.CreatedDate,
+                    ResultPercentage = s.ResultPercentage
+                }).ToList();
+
+            TempData["courseResults"] = courseresults;
+            TempData["lessonResults"] = lessonresults;
+
+            TempData["percentages"] = percentages;
+
+            return View("~/Views/Student/Result.cshtml");
         }
     }
 }

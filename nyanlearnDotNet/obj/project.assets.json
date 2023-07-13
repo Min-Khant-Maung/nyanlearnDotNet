@@ -1018,6 +1018,28 @@
           }
         }
       },
+      "Select.HtmlToPdf.NetCore/18.3.0": {
+        "type": "package",
+        "dependencies": {
+          "System.Drawing.Common": "4.5.0",
+          "System.Security.Principal.Windows": "4.5.0",
+          "System.Text.Encoding.CodePages": "4.5.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Select.HtmlToPdf.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Select.HtmlToPdf.dll": {}
+        },
+        "contentFiles": {
+          "contentFiles/any/any/Select.Html.dep": {
+            "buildAction": "Content",
+            "codeLanguage": "any",
+            "copyToOutput": true,
+            "outputPath": "Select.Html.dep"
+          }
+        }
+      },
       "System.CodeDom/5.0.0": {
         "type": "package",
         "compile": {
@@ -1943,7 +1965,7 @@
       "System.Security.Principal.Windows/4.7.0": {
         "type": "package",
         "compile": {
-          "ref/netcoreapp3.0/_._": {}
+          "ref/netcoreapp3.0/System.Security.Principal.Windows.dll": {}
         },
         "runtime": {
           "lib/netstandard2.0/System.Security.Principal.Windows.dll": {}
@@ -3997,6 +4019,22 @@
         "runtimes/win-x86/native/sni.dll",
         "useSharedDesignerContext.txt",
         "version.txt"
+      ]
+    },
+    "Select.HtmlToPdf.NetCore/18.3.0": {
+      "sha512": "EXHumjiO8k/ESK1JiduPbvDsVkKjpA/xrnrrSvBvedIWl+RXaeXNjcO9TaVc8VGZ9Cvj1LTsjsD0Y2/UVYQYAA==",
+      "type": "package",
+      "path": "select.htmltopdf.netcore/18.3.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "contentFiles/any/any/Select.Html.dep",
+        "lib/netstandard2.0/Select.Html.dep",
+        "lib/netstandard2.0/Select.HtmlToPdf.dll",
+        "lib/netstandard2.0/Select.HtmlToPdf.xml",
+        "readme.txt",
+        "select.htmltopdf.netcore.18.3.0.nupkg.sha512",
+        "select.htmltopdf.netcore.nuspec"
       ]
     },
     "System.CodeDom/5.0.0": {
@@ -7706,6 +7744,7 @@
       "Microsoft.EntityFrameworkCore.Tools >= 5.0.17",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 5.0.2",
       "Newtonsoft.Json >= 11.0.2",
+      "Select.HtmlToPdf.NetCore >= 18.3.0",
       "System.CodeDom >= 5.0.0",
       "System.Data.SqlClient >= 4.8.5",
       "System.Drawing.Common >= 5.0.0",
@@ -7786,6 +7825,10 @@
           "Newtonsoft.Json": {
             "target": "Package",
             "version": "[11.0.2, )"
+          },
+          "Select.HtmlToPdf.NetCore": {
+            "target": "Package",
+            "version": "[18.3.0, )"
           },
           "System.CodeDom": {
             "target": "Package",

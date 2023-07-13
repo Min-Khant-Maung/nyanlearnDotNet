@@ -1,0 +1,191 @@
+@using Newtonsoft.Json;
+@{
+            var courseresults = TempData["courseResults"];
+            var lessonresults = TempData["lessonResults"];
+            var percentages = TempData["percentages"];
+            // Configure the JSON serializer settings
+            var jsonSerializerSettings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+
+// Serialize the course results using the configured JSON serializer settings
+            string CourseResults = Newtonsoft.Json.JsonConvert.SerializeObject(courseresults,jsonSerializerSettings);
+            string LessonResults = Newtonsoft.Json.JsonConvert.SerializeObject(lessonresults,jsonSerializerSettings);
+            string Percentages = Newtonsoft.Json.JsonConvert.SerializeObject(percentages,jsonSerializerSettings);
+}
+<div class="content-wrapper">
+
+    <div id="accordion">
+        @* <div class="card">
+          <div class="card-header" id="headingOne">
+            <h5 class="mb-0">
+ 
+                
+                                
+                <div class="d-flex justify-content-between">
+                    
+                    <div>
+                        <h5>Course Name</h5>
+                    </div>
+
+                    <div>
+                        <h5>Instructor Name</h5>
+                    </div>
+
+                    <div>
+                        <h5>Enrolled Date</h5>
+                    </div>
+
+                    <div>
+                        <h5>Course Total Result</h5>
+                    </div>
+
+                    <div>
+                        <!-- <button class="btn btn-link" >
+                        </button> -->
+                        <h5 class="expandables" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Lesson Results</h5>
+                    </div>
+
+                </div>
+             
+            </h5>
+          </div>
+      
+          <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+            <div class="card-body">
+
+
+                <div class="d-flex justify-content-between">
+                    
+                    <div>
+                        <h5>Lesson Name</h5>
+                    </div>
+
+                    <div>
+                        <h5>Answered Date</h5>
+                    </div>
+
+                    <div>
+                        <h5>Lesson Result</h5>
+                    </div>
+
+                </div>
+
+                
+
+
+            </div>
+          </div>
+        </div> *@
+      </div>
+</div>
+
+<script>
+    let courseResults = @Html.Raw(CourseResults);
+    let lessonResults = @Html.Raw(LessonResults);
+    let percentages = @Html.Raw(Percentages);
+
+
+
+    let accordion     = document.getElementById("accordion");
+
+        
+if(courseResults && lessonResults)
+{
+    for (let index = 0; index < courseResults.length; index++) {
+        const element           = courseResults[index];
+        const courseName        = element.Course.Name;
+        const courseId        = element.Course.Id;
+        const enrolledDate      = element.Course.CreatedDate;
+        const instructorName    = element.Instructor.Name;
+        const courseResult      = element.ResultPercentage; 
+
+        const numOfLessons        = percentages.filter(p=>p.CourseId===courseId)[0].numOfLessons;
+        
+        let str                 = `<div class="card">
+        <div class="card-header" id="heading${index}">
+          <h5 class="mb-0">
+    
+              
+                              
+              <div class="d-flex justify-content-between">
+                  
+                  <div>
+                      <h5>Course : ${courseName}</h5>
+                  </div>
+    
+                  <div>
+                      <h5>Instructor : ${instructorName}</h5>
+                  </div>
+    
+                  <div>
+                      <h5>Enrolled Date : ${enrolledDate.split("T")[0]}</h5>
+                  </div>
+    
+                  <div>
+                      <h5>Course Result : ${(courseResult/numOfLessons).toFixed(2)} %</h5>
+                  </div>
+    
+                  <div>
+                      <input type="text" class="course${index}Id"  hidden>
+                      <h5 class="expandables" data="${courseId}" index="${index}" data-toggle="collapse" data-target="#collapse${index}" aria-expanded="true" aria-controls="collapse${index}" onClick="showLessonResult(event)">Lesson Results</h5>
+                  </div>
+    
+              </div>
+           
+          </h5>
+        </div>
+    
+        <div id="collapse${index}" class="collapse show" aria-labelledby="heading${index}" data-parent="#accordion">
+          <div class="card-body">
+    
+    
+
+    
+              
+    
+    
+          </div>
+        </div>
+      </div>`
+
+      accordion.innerHTML += str;
+    }
+}
+
+function showLessonResult(e) 
+{
+    
+    let uniqueCourseId = e.target.getAttribute("data");
+    let currentIndex = e.target.getAttribute("index");
+    let relatedLessons = lessonResults.filter((l)=>l.Lesson.CourseId===uniqueCourseId);
+    let currentCardBody       = document.getElementsByClassName("card-body")[currentIndex];
+    currentCardBody.innerHTML = "";
+    for (let index = 0; index < relatedLessons.length; index++) {
+        const element = relatedLessons[index];
+        currentCardBody.innerHTML+= `
+        <div class="d-flex justify-content-between">
+                  
+<div>
+    <h5>Lesson : ${element.Lesson.Name}</h5>
+</div>
+
+<div>
+    <h5>Answerd Date : ${element.CreatedDate.split("T")[0]}</h5>
+</div>
+
+<div>
+    <h5>Result : ${(element.ResultPercentage).toFixed(2)} %</h5>
+</div>
+
+</div>
+        `;
+    }
+
+}
+
+
+
+
+</script>

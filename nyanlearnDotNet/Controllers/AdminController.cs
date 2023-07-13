@@ -164,6 +164,7 @@ namespace nyanlearnDotNet.Controllers
             student.Phone   = data.Phone;
             student.FatherName = data.FatherName;
             student.UserId     = user.Id;
+            student.CreatedDate = DateTime.Now;
             student.ImagePath  = data.ImagePath;
 
 
@@ -239,8 +240,6 @@ namespace nyanlearnDotNet.Controllers
             _applicationDbContext.SaveChanges();//saving the record to the database
 
 
-
-
             return RedirectToAction("ListStudents");
         }
 
@@ -270,7 +269,7 @@ namespace nyanlearnDotNet.Controllers
 
 
         [Authorize(Roles = "admin")]
-             [Route("Instructor/Add")]
+        [Route("Instructor/Add")]
         public IActionResult AddInstructor()
         {
             IList<NRCViewModel> nrcs = _applicationDbContext.NRCs.Select

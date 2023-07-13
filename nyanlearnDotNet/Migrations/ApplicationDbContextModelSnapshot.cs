@@ -341,6 +341,40 @@ namespace nyanlearnDotNet.Migrations
                     b.ToTable("CourseLessons");
                 });
 
+            modelBuilder.Entity("nyanlearnDotNet.Models.CourseResult", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CourseId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("InstructorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("ResultPercentage")
+                        .HasColumnType("float");
+
+                    b.Property<string>("StudentId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("InstructorId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("CourseResult");
+                });
+
             modelBuilder.Entity("nyanlearnDotNet.Models.Enrollment", b =>
                 {
                     b.Property<string>("Id")
@@ -357,6 +391,9 @@ namespace nyanlearnDotNet.Migrations
 
                     b.Property<string>("StudentId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("numOfLessons")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -475,6 +512,35 @@ namespace nyanlearnDotNet.Migrations
                     b.HasIndex("InstructorId");
 
                     b.ToTable("Lesson");
+                });
+
+            modelBuilder.Entity("nyanlearnDotNet.Models.LessonResult", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LessonId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("ResultPercentage")
+                        .HasColumnType("float");
+
+                    b.Property<string>("StudentId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LessonId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("LessonResult");
                 });
 
             modelBuilder.Entity("nyanlearnDotNet.Models.NRC", b =>
@@ -771,6 +837,27 @@ namespace nyanlearnDotNet.Migrations
                     b.Navigation("Lesson");
                 });
 
+            modelBuilder.Entity("nyanlearnDotNet.Models.CourseResult", b =>
+                {
+                    b.HasOne("nyanlearnDotNet.Models.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId");
+
+                    b.HasOne("nyanlearnDotNet.Models.Instructor", "Instructor")
+                        .WithMany()
+                        .HasForeignKey("InstructorId");
+
+                    b.HasOne("nyanlearnDotNet.Models.Student", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId");
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Instructor");
+
+                    b.Navigation("Student");
+                });
+
             modelBuilder.Entity("nyanlearnDotNet.Models.Enrollment", b =>
                 {
                     b.HasOne("nyanlearnDotNet.Models.Course", "Course")
@@ -815,6 +902,21 @@ namespace nyanlearnDotNet.Migrations
                     b.HasOne("nyanlearnDotNet.Models.Instructor", null)
                         .WithMany("Lessons")
                         .HasForeignKey("InstructorId");
+                });
+
+            modelBuilder.Entity("nyanlearnDotNet.Models.LessonResult", b =>
+                {
+                    b.HasOne("nyanlearnDotNet.Models.Lesson", "Lesson")
+                        .WithMany()
+                        .HasForeignKey("LessonId");
+
+                    b.HasOne("nyanlearnDotNet.Models.Student", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId");
+
+                    b.Navigation("Lesson");
+
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("nyanlearnDotNet.Models.Quiz", b =>

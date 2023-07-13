@@ -1,0 +1,38 @@
+<div class="content-wrapper">
+    @model IList<AnswerQuizViewModel>
+    @{
+        var lessonId = @TempData["lessonId"];
+    }
+
+    <h1 style="margin-left:2%; padding-top:2%;">List All Courses</h1>
+
+
+         @for (int i = 0; i < Model.Count; i++)
+        {          
+                <div id="quizQuestion" style="margin: 30px;">
+                    <input type="hidden" name="QuizId" id="@Model[i].Id" />
+                    <div style="display: flex;  justify-content: space-between;">
+                        <div style="margin-left:2%">@Html.Raw(@Model[i].Question)</div>
+                        <p style="border:1px solid rgb(55, 166, 206);padding:2px;border-radius:3px">1 point</p>
+                    </div>
+                    <div id="">
+                        <select name="@Model[i].SelectedOption" style="width:15%;" class="form-control" >
+                            <option selected>Select your answer</option>
+                            <option value="Option1">@Model[i].Option1</option>
+                            <option value="Option2">@Model[i].Option2</option>
+                            <option value="Option3">@Model[i].Option3</option>
+                            <option value="Option4">@Model[i].Option4</option>
+                        </select>
+                    </div>
+                </div>
+
+        }
+
+    <div style="margin:2% 0% 0% 5%; display:flex;">
+        <input type="checkbox" name="" id="rechecked" style="margin-bottom:3%; padding:0%;">
+        <label for=rechecked" style="margin-left: 1%;">I, nyanlearn_student_0001@nyanlearn.com, understand that submitting work that isn’t my own may result in permanent failure of this course or deactivation of my Nyanlearn account.</label>
+    </div>
+    
+
+
+</div>

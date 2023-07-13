@@ -201,9 +201,8 @@ C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Instructor\StudentList.cshtml.g.cs
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Student\CourseLearn.cshtml.g.cs
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Student\CourseLessonLearn.cshtml.g.cs
-C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\staticwebassets\nyanlearnDotNet.StaticWebAssets.Pack.cache
-C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\staticwebassets\msbuild.nyanlearnDotNet.Microsoft.AspNetCore.StaticWebAssets.props
-C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\staticwebassets\msbuild.build.nyanlearnDotNet.props
-C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\staticwebassets\msbuild.buildMultiTargeting.nyanlearnDotNet.props
-C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\staticwebassets\msbuild.buildTransitive.nyanlearnDotNet.props
-C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\refint\nyanlearnDotNet.dll
+C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\bin\Debug\net5.0\Select.Html.dep
+C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\bin\Debug\net5.0\Select.HtmlToPdf.dll
+C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Instructor\Quiz.cshtml.g.cs
+C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Student\Result.cshtml.g.cs
+C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\bin\Debug\net5.0\ref\nyanlearnDotNet.dll

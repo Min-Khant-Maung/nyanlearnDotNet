@@ -16,6 +16,9 @@ namespace nyanlearnDotNet.Models
         public string CourseId { get; set; }
 
 
+        public int numOfLessons { get; set;}
+
+
         [ForeignKey("StudentId")]
         public virtual Student Student { get; set; }
 

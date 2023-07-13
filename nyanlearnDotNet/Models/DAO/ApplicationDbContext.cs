@@ -27,7 +27,8 @@ namespace nyanlearnDotNet.Models.DAO
 
 
 
-
+        public DbSet<LessonResult> LessonResults { get; set; }
+        public DbSet<CourseResult> CourseResults { get; set; }
 
         public DbSet<Lesson> Lessons { get; set; }
         public DbSet<CourseLessons> CourseLessons { get; set; }

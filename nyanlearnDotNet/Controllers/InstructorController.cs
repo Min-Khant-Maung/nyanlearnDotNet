@@ -126,7 +126,7 @@ namespace nyanlearnDotNet.Controllers
             .Where(cl => cl.InstructorId == CurrentInstructorId).Select(
                 cl =>
                 new LessonViewModel {
-                    Id          = cl.Id,
+                    Id          = cl.Lesson.Id,
                     Name        = cl.Lesson.Name,
                     Description = cl.Lesson.Description,
                     CourseName  = cl.Course.Name,
@@ -269,6 +269,7 @@ namespace nyanlearnDotNet.Controllers
 
                 CourseLessons courseLesson = new CourseLessons();
                 courseLesson.Id = Guid.NewGuid().ToString();
+                courseLesson.CreatedDate = DateTime.Now;
                 courseLesson.LessonId = generatedLessonId;
                 courseLesson.CourseId = lessonViewModel.CourseId;
                 courseLesson.InstructorId = CurrentInstructorId;
@@ -286,7 +287,10 @@ namespace nyanlearnDotNet.Controllers
             _applicationDbContext.SaveChanges();//saving the record to the database
             return RedirectToAction("Index");
         }
-
+    
+    
+    
+    
     [Authorize(Roles = "instructor")]
     [Route("Quiz/Add")]
 
@@ -314,6 +318,7 @@ namespace nyanlearnDotNet.Controllers
             
             Quiz quiz = new Quiz();
             quiz.Id =  Guid.NewGuid().ToString();
+            quiz.CreatedDate = DateTime.Now;
             quiz.LessonId = createQuizViewModel.LessonId;
 
             quiz.Question = createQuizViewModel.Question;
@@ -334,6 +339,30 @@ namespace nyanlearnDotNet.Controllers
 
             return RedirectToAction("index");
         }
+
+
+
+
+        [Authorize(Roles = "instructor")]
+        [Route("Course/Lesson/Quiz")]
+
+        public IActionResult AnswerQuiz(string lessonId)
+        {
+            var quizs = _applicationDbContext.Quizs.Where(q=>q.LessonId==lessonId).Select(q=> new AnswerQuizViewModel
+            {
+                Id = q.Id,
+                Question = q.Question,
+                Option1 = q.Option1,
+                Option2 = q.Option2,
+                Option3 = q.Option3,
+                Option4 = q.Option4,
+                Answer = q.Answer,
+            }).ToList();
+
+            TempData["lessonId"] = lessonId;
+            return View("~/Views/Instructor/Quiz.cshtml",quizs);
+        }
+
 
 
 

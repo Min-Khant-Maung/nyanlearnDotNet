@@ -76,6 +76,10 @@
               "target": "Package",
               "version": "[11.0.2, )"
             },
+            "Select.HtmlToPdf.NetCore": {
+              "target": "Package",
+              "version": "[18.3.0, )"
+            },
             "System.CodeDom": {
               "target": "Package",
               "version": "[5.0.0, )"

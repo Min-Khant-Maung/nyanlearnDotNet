@@ -1,79 +1,94 @@
+@model IList<AnswerQuizViewModel>
 <div class="content-wrapper">
-    @model IList<AnswerQuizViewModel>
+
     @{
-        var lessonId = @TempData["lessonId"];
+        var lessonId = TempData["lessonId"];
+        var numOfQuizs = TempData["numOfQuizs"];
+        var courseId = TempData["courseId"];
     }
 
-    <h1>List All Courses</h1>
-
-
+    <h1 style="margin-left:2%; padding-top:2%;">List All Courses</h1>
+    <ol>
+        @{
+            var count = 1;
+            var str = "quizAnswer";
+        }
          @for (int i = 0; i < Model.Count; i++)
         {          
                 <div id="quizQuestion" style="margin: 30px;">
-                     <input type="hidden" name="QuizId" value="@Model[i].Id" />
+                    <input type="hidden"  id=@str@count.ToString() value="@Model[i].Answer" />
                     <div style="display: flex;  justify-content: space-between;">
-                        <div style="margin-left:2%">@Html.Raw(@Model[i].Question)</div>
+                        <li style="width: 50%;"><div style="margin-left:2%">@Html.Raw(@Model[i].Question)</div></li>
                         <p style="border:1px solid rgb(55, 166, 206);padding:2px;border-radius:3px">1 point</p>
                     </div>
                     <div id="">
-
-
-                        <ol>
-                            <li>
-                                <div class="form-check">
-                            <input class="form-check-input" type="radio" id="flexRadioDefault1" name="SelectedOption" value="Option1">
-                            <label class="form-check-label" for="flexRadioDefault1">
-                                @Model[i].Option1
-                            </label>
-                                </div>
-                            </li>
-
-
-                            <li>
-                                                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="SelectedOption" id="flexRadioDefault2" value="Option2">
-                            <label class="form-check-label" for="flexRadioDefault2">
-                                 @Model[i].Option2
-                            </label>
-                        </div>
-                            </li>
-
-
-                            <li>
-                                 <div class="form-check">
-                            <input class="form-check-input" type="radio" name="SelectedOption" id="flexRadioDefault2" value="Option3">
-                            <label class="form-check-label" for="flexRadioDefault2">
-                                 @Model[i].Option3
-                            </label>
-                        </div>
-                            </li>
-
-
-                            <li>
-
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="SelectedOption" id="flexRadioDefault2" value="Option4">
-                            <label class="form-check-label" for="flexRadioDefault2">
-                                 @Model[i].Option4
-                            </label>
-                        </div>
-                            </li>
-                        </ol>
-
-
-
-
-                       
-
-
-
+                        <select name=@str@count.ToString() style="width:15%;" class="form-control" onchange="checkMarks(event)">
+                            <option selected>Select your answer</option>
+                            <option value="Option1">@Model[i].Option1</option>
+                            <option value="Option2">@Model[i].Option2</option>
+                            <option value="Option3">@Model[i].Option3</option>
+                            <option value="Option4">@Model[i].Option4</option>
+                        </select>
                     </div>
                 </div>
-
-            }
-
-
-     <a href="/Student/Course/Lesson/Quiz/Result?lessonid=@lessonId" class="btn btn-primary">Take Quiz</a>
+                count++;
+            
+        }
+    </ol>
+    <div style="margin:2% 0% 0% 5%; display:flex;">
+        <input type="checkbox" name="" id="rechecked" style="margin-bottom:3%; padding:0%;">
+        <label for=rechecked" style="margin-left: 1%;">I, nyanlearn_student_0001@nyanlearn.com, understand that submitting work that isn’t my own may result in permanent failure of this course or deactivation of my Nyanlearn account.</label>
+    </div>
+    
+    
+    <a id="submitBtn" href="/Student/Course/Lesson/Quiz/Result?lessonid=@lessonId&courseId=@courseId&totalMarks=" class="btn btn-primary" style="margin:1% 0% 0% 5%;">Submit</a>
 
 
 </div>
+
+
+<script>
+    
+    let totalMarks = @Html.Raw(numOfQuizs);
+    console.log(totalMarks)
+    let lessonMarks = 0;
+
+
+    function checkMarks(e)
+    {
+        let quizNo = e.target.name;
+        let answer = document.getElementById(quizNo).value;
+        let btn = document.getElementById("submitBtn");
+        let url = btn.href;
+
+
+
+
+        let option = e.target.value;
+        if(option===answer){
+            lessonMarks++;
+
+            let percentage = (calculatePercentage(lessonMarks));
+
+            let sections = url.split("=");
+
+            let desiredSections = sections.slice(0,3);
+
+            let desiredUrl = desiredSections.join("=");
+
+            desiredUrl = desiredUrl + "=" + percentage.toString();
+
+            btn.href = desiredUrl;
+        }
+        e.target.disabled = true;
+    }
+
+
+    function calculatePercentage(resultMark)
+    {
+        let percentage = (resultMark/totalMarks)*100;
+        return percentage;
+    }
+
+
+</script>
