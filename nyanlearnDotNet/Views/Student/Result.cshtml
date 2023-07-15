@@ -87,6 +87,10 @@
     let percentages = @Html.Raw(Percentages);
 
 
+    console.log(courseResults);
+    console.log(lessonResults);
+    console.log(percentages);
+
 
     let accordion     = document.getElementById("accordion");
 
@@ -102,6 +106,8 @@ if(courseResults && lessonResults)
         const courseResult      = element.ResultPercentage; 
 
         const numOfLessons        = percentages.filter(p=>p.CourseId===courseId)[0].numOfLessons;
+
+
         
         let str                 = `<div class="card">
         <div class="card-header" id="heading${index}">

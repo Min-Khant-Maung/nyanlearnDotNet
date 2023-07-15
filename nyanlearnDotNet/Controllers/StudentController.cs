@@ -6,10 +6,13 @@ using Microsoft.Extensions.Logging;
 using nyanlearnDotNet.Models;
 using nyanlearnDotNet.Models.DAO;
 using nyanlearnDotNet.Models.ViewModel;
+using SelectPdf;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace nyanlearnDotNet.Controllers
@@ -23,10 +26,15 @@ namespace nyanlearnDotNet.Controllers
         private readonly UserManager<IdentityUser> _usermanager;
         private readonly ILogger<StudentController> _logger;
 
-        private  string CurrentUserId;
-        private  string CurrentStudentId;
+        private const string alphanumericChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        private const string specialChars = "!@#$%^&*";
 
-        public StudentController(ApplicationDbContext applicationDbContext, UserManager<IdentityUser> userManager,ILogger<StudentController> logger)
+        private static readonly Random random = new Random();
+
+        private string CurrentUserId;
+        private string CurrentStudentId;
+
+        public StudentController(ApplicationDbContext applicationDbContext, UserManager<IdentityUser> userManager, ILogger<StudentController> logger)
         {
             _applicationDbContext = applicationDbContext;
             _usermanager = userManager;
@@ -34,9 +42,8 @@ namespace nyanlearnDotNet.Controllers
         }
         public IActionResult Index()
         {
-             CurrentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
+            CurrentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
             var student = _applicationDbContext.Students.FirstOrDefault(i => i.UserId == CurrentUserId);
-            _logger.LogInformation(student.ImagePath);
             ViewBag.profileUrl = student.ImagePath;
             return View("~/Views/Student/Index.cshtml");
         }
@@ -47,13 +54,16 @@ namespace nyanlearnDotNet.Controllers
         [Route("Course/All")]
         public IActionResult ListAllCourses()
         {
+            CurrentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
+            var student = _applicationDbContext.Students.FirstOrDefault(i => i.UserId == CurrentUserId);
+            ViewBag.profileUrl = student.ImagePath;
             IList<CourseViewModel> courses = _applicationDbContext.Courses.Select
                 (t => new CourseViewModel
                 {
                     Id = t.Id,
                     Name = t.Name,
                     Description = t.Description,
-                    ImagePath    = t.ImagePath
+                    ImagePath = t.ImagePath
                 }).ToList();
 
 
@@ -73,15 +83,18 @@ namespace nyanlearnDotNet.Controllers
             CurrentStudentId = student.Id;
 
 
-            IList<CourseViewModel> courses =  _applicationDbContext.Enrollments
+            ViewBag.profileUrl = student.ImagePath;
+
+
+            IList<CourseViewModel> courses = _applicationDbContext.Enrollments
             .Where(enrollment => enrollment.StudentId == CurrentStudentId)
             .Select(enrollment => new CourseViewModel
-                {
+            {
                 Id = enrollment.Course.Id,
                 Name = enrollment.Course.Name,
                 Description = enrollment.Course.Description,
-                ImagePath   = enrollment.Course.ImagePath
-                    }).ToList();
+                ImagePath = enrollment.Course.ImagePath
+            }).ToList();
 
 
 
@@ -93,18 +106,27 @@ namespace nyanlearnDotNet.Controllers
         [Authorize(Roles = "student")]
         [Route("Course/Enroll")]
         public async Task<IActionResult> EnrollCourse(string courseId)
-        {   
-            
+        {
+
             CurrentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
             var student = await _applicationDbContext.Students.FirstOrDefaultAsync(i => i.UserId == CurrentUserId);
 
 
-            var enrolledCourse = await _applicationDbContext.Courses.Include(c => c.Lessons)
-                .FirstOrDefaultAsync(c => c.Id == courseId);
 
-         
-            
-            int currentCourseNumOfLessons = enrolledCourse.Lessons.Count;
+            ViewBag.profileUrl = student.ImagePath;
+            var enrolledCourse = await _applicationDbContext.Courses.FirstOrDefaultAsync(c => c.Id == courseId);
+
+
+
+
+
+
+
+
+
+
+
+            int currentCourseNumOfLessons = await _applicationDbContext.Lessons.Where(l => l.CourseId == courseId).CountAsync();
 
             var instructorId = enrolledCourse.InstructorId;
 
@@ -114,7 +136,7 @@ namespace nyanlearnDotNet.Controllers
             enrollment.Id = Guid.NewGuid().ToString();
             enrollment.CreatedDate = DateTime.Now;
             enrollment.StudentId = CurrentStudentId;
-            enrollment.CourseId  = courseId;
+            enrollment.CourseId = courseId;
             enrollment.numOfLessons = currentCourseNumOfLessons;
 
 
@@ -122,8 +144,8 @@ namespace nyanlearnDotNet.Controllers
             courseResult.Id = Guid.NewGuid().ToString();
             courseResult.CreatedDate = DateTime.Now;
             courseResult.StudentId = CurrentStudentId;
-            courseResult.CourseId  = courseId;
-            courseResult.InstructorId  = instructorId;
+            courseResult.CourseId = courseId;
+            courseResult.InstructorId = instructorId;
             courseResult.ResultPercentage = 0;
 
             await _applicationDbContext.Enrollments.AddAsync(enrollment);
@@ -135,9 +157,12 @@ namespace nyanlearnDotNet.Controllers
         [Authorize(Roles = "student")]
         [Route("Course/Lesson/Quiz")]
 
-        public IActionResult AnswerQuiz(string lessonId,string courseId)
+        public IActionResult AnswerQuiz(string lessonId, string courseId)
         {
-            var quizs = _applicationDbContext.Quizs.Where(q=>q.LessonId==lessonId).Select(q=> new AnswerQuizViewModel
+            CurrentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
+            var student = _applicationDbContext.Students.FirstOrDefault(i => i.UserId == CurrentUserId);
+            ViewBag.profileUrl = student.ImagePath;
+            var quizs = _applicationDbContext.Quizs.Where(q => q.LessonId == lessonId).Select(q => new AnswerQuizViewModel
             {
                 Id = q.Id,
                 Question = q.Question,
@@ -150,8 +175,8 @@ namespace nyanlearnDotNet.Controllers
 
             TempData["lessonId"] = lessonId;
             TempData["courseId"] = courseId;
-            TempData["numOfQuizs"] = _applicationDbContext.Quizs.Where(q=>q.LessonId==lessonId).Count();
-            return View("~/Views/Student/Quiz.cshtml",quizs);
+            TempData["numOfQuizs"] = _applicationDbContext.Quizs.Where(q => q.LessonId == lessonId).Count();
+            return View("~/Views/Student/Quiz.cshtml", quizs);
         }
 
         [Authorize(Roles = "student")]
@@ -159,8 +184,11 @@ namespace nyanlearnDotNet.Controllers
 
         public IActionResult CourseLearn(string courseId)
         {
-            var lessons = _applicationDbContext.Lessons.Where(l=> l.CourseId==courseId).Select(
-                l=> new LessonViewModel
+            CurrentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
+            var student = _applicationDbContext.Students.FirstOrDefault(i => i.UserId == CurrentUserId);
+            ViewBag.profileUrl = student.ImagePath;
+            var lessons = _applicationDbContext.Lessons.Where(l => l.CourseId == courseId).Select(
+                l => new LessonViewModel
                 {
                     Name = l.Name,
                     Id = l.Id,
@@ -168,7 +196,7 @@ namespace nyanlearnDotNet.Controllers
                     CourseId = l.CourseId,
                 }
             ).ToList();
-            return View("~/Views/Student/CourseLearn.cshtml",lessons);
+            return View("~/Views/Student/CourseLearn.cshtml", lessons);
         }
 
 
@@ -177,29 +205,35 @@ namespace nyanlearnDotNet.Controllers
         [Authorize(Roles = "student")]
         [Route("Course/Lesson/Learn")]
 
-        public IActionResult LessonLearn(string lessonId,string courseId)
+        public IActionResult LessonLearn(string lessonId, string courseId)
         {
-            var l = _applicationDbContext.Lessons.FirstOrDefault(l=> l.Id==lessonId);
+            CurrentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
+            var student = _applicationDbContext.Students.FirstOrDefault(i => i.UserId == CurrentUserId);
+            ViewBag.profileUrl = student.ImagePath;
+            var l = _applicationDbContext.Lessons.FirstOrDefault(l => l.Id == lessonId);
             LessonViewModel lesson = new LessonViewModel();
 
-                    lesson.Name = l.Name;
-                    lesson.Id = l.Id;
-                    lesson.Description = l.Description;
-                    lesson.CourseName = l.CourseName;
-                    lesson.FilePath = l.FilePath;
+            lesson.Name = l.Name;
+            lesson.Id = l.Id;
+            lesson.Description = l.Description;
+            lesson.CourseName = l.CourseName;
+            lesson.FilePath = l.FilePath;
 
             TempData["courseId"] = courseId;
-            return View("~/Views/Student/CourseLessonLearn.cshtml",lesson);
+            return View("~/Views/Student/CourseLessonLearn.cshtml", lesson);
         }
 
-         [Authorize(Roles = "student")]
+        [Authorize(Roles = "student")]
         [Route("Course/Lesson/Quiz/Result")]
-        
-        public IActionResult CheckQuiz(string lessonId,string courseId,string totalMarks)
+
+        public IActionResult CheckQuiz(string lessonId, string courseId, string totalMarks)
         {
             CurrentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
             var student = _applicationDbContext.Students.FirstOrDefault(i => i.UserId == CurrentUserId);
             CurrentStudentId = student.Id;
+
+
+            ViewBag.profileUrl = student.ImagePath;
 
             LessonResult lessonResult = new LessonResult();
             lessonResult.Id = Guid.NewGuid().ToString();
@@ -210,49 +244,49 @@ namespace nyanlearnDotNet.Controllers
 
 
             //get current student'scourse total percentage
-            var currentPercentage = _applicationDbContext.CourseResults.FirstOrDefault(cr=> cr.CourseId==courseId && cr.StudentId==CurrentStudentId).ResultPercentage;
-            
-            
-          
+            var currentPercentage = _applicationDbContext.CourseResults.FirstOrDefault(cr => cr.CourseId == courseId && cr.StudentId == CurrentStudentId).ResultPercentage;
+
+
+
 
 
             //calculate num of leesons from course model beacuse we wanna calculate total result 
             var course = _applicationDbContext.Courses
                 .Include(c => c.Lessons)
                 .FirstOrDefault(c => c.Id == courseId);
-            
- 
 
-              // update current student'scourse total percentage
-            currentPercentage =(  currentPercentage +  double.Parse(totalMarks) );
+
+
+            // update current student'scourse total percentage
+            currentPercentage = (currentPercentage + double.Parse(totalMarks));
 
 
 
             // save data to course result table
-           
-            CourseResult courseResult       = new CourseResult();
-            courseResult.Id                 = Guid.NewGuid().ToString();
-            courseResult.StudentId          = CurrentStudentId;
-            courseResult.CourseId           = courseId;
-            courseResult.ResultPercentage   = currentPercentage;
+
+            CourseResult courseResult = new CourseResult();
+            courseResult.Id = Guid.NewGuid().ToString();
+            courseResult.StudentId = CurrentStudentId;
+            courseResult.CourseId = courseId;
+            courseResult.ResultPercentage = currentPercentage;
 
             _applicationDbContext.LessonResults.Add(lessonResult);
 
-            _applicationDbContext.SaveChanges(); 
-            return RedirectToAction("UpdateStudentResult",courseResult);
+            _applicationDbContext.SaveChanges();
+            return RedirectToAction("UpdateStudentResult", courseResult);
         }
 
 
 
 
-         [Authorize(Roles = "student")]
+        [Authorize(Roles = "student")]
         [Route("Course/Lesson/Quiz/Result/UpdateDb")]
         public IActionResult UpdateStudentResult(CourseResult courseResult)
         {
-                var result = _applicationDbContext.CourseResults.FirstOrDefault(c => c.CourseId==courseResult.CourseId);
-                result.ResultPercentage =  courseResult.ResultPercentage;
-                _applicationDbContext.SaveChanges();
-                return RedirectToAction("EnrolledCourses");
+            var result = _applicationDbContext.CourseResults.FirstOrDefault(c => c.CourseId == courseResult.CourseId);
+            result.ResultPercentage = courseResult.ResultPercentage;
+            _applicationDbContext.SaveChanges();
+            return RedirectToAction("EnrolledCourses");
         }
 
 
@@ -266,6 +300,9 @@ namespace nyanlearnDotNet.Controllers
             CurrentStudentId = student.Id;
 
 
+            ViewBag.profileUrl = student.ImagePath;
+
+
             IList<CourseResultPercentageViewModel> percentages = await _applicationDbContext.Enrollments.Where(
                 e => e.StudentId == CurrentStudentId
             ).Select(
@@ -276,20 +313,20 @@ namespace nyanlearnDotNet.Controllers
                 }
             ).ToListAsync();
 
-                       
 
-            IList<CourseResultViewModel> courseresults = _applicationDbContext.CourseResults.Where(cr=>cr.StudentId==CurrentStudentId).Select
+
+            IList<CourseResultViewModel> courseresults = _applicationDbContext.CourseResults.Where(cr => cr.StudentId == CurrentStudentId).Select
                 (cv => new CourseResultViewModel
                 {
                     Course = cv.Course,
                     CreatedDate = cv.CreatedDate,
-                    ResultPercentage =cv.ResultPercentage,
+                    ResultPercentage = cv.ResultPercentage,
                     Instructor = cv.Instructor
                 }).ToList();
 
 
 
-            IList<LessonResultViewModel> lessonresults = _applicationDbContext.LessonResults.Where(lr=>lr.StudentId==CurrentStudentId).Select
+            IList<LessonResultViewModel> lessonresults = _applicationDbContext.LessonResults.Where(lr => lr.StudentId == CurrentStudentId).Select
                 (s => new LessonResultViewModel
                 {
                     Lesson = s.Lesson,
@@ -304,5 +341,108 @@ namespace nyanlearnDotNet.Controllers
 
             return View("~/Views/Student/Result.cshtml");
         }
+
+
+
+        [Authorize(Roles = "student")]
+        [Route("/Certificate")]
+        public IActionResult GetCertificate(string studentName,string courseName,string instructorName)
+        {
+            string currentPath = Directory.GetCurrentDirectory();
+            string htmlRawString = ReadHtmlFileAsString(currentPath + "/index.html");
+
+
+
+            studentName = "John Doe";
+            courseName = "Introduction to Programming";
+            instructorName = "Jane Smith";
+            string gaveDate = DateTime.Now.ToShortDateString();
+            string certificateId = "nyanlearn"+GeneratePassword(10);
+
+            // Replace placeholders in the HTML content
+            htmlRawString = htmlRawString.Replace("{studentName}", studentName)
+                                     .Replace("{courseName}", courseName)
+                                     .Replace("{instructor}", instructorName)
+                                     .Replace("{gaveDate}", gaveDate)
+                                     .Replace("{certificateId}", certificateId);
+            // _logger.LogInformation(htmlRawString);
+            ConvertHtmlToPdf(htmlRawString, currentPath + "/generate.pdf");
+            return View("~/Views/Home/Index.cshtml");
+        }
+
+
+        public void ConvertHtmlToPdf(string htmlContent, string outputPath)
+        {
+            // Create a new HTML to PDF converter
+            HtmlToPdf converter = new HtmlToPdf();
+
+            // Set converter options (optional)
+            converter.Options.MarginTop = 10;
+            converter.Options.MarginBottom = 10;
+
+            // Convert HTML string to PDF
+            PdfDocument document = converter.ConvertHtmlString(htmlContent);
+
+            // Save the PDF document
+            document.Save(outputPath);
+
+            // Close the PDF document
+            document.Close();
+        }
+
+        public static string ReadHtmlFileAsString(string filePath)
+        {
+            string htmlContent = System.IO.File.ReadAllText(filePath);
+            return htmlContent;
+        }
+
+
+
+        public static string GeneratePassword(int length)
+        {
+            StringBuilder password = new StringBuilder();
+
+            // Generate one uppercase letter
+            password.Append(GenerateRandomChar("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+
+            // Generate one lowercase letter
+            password.Append(GenerateRandomChar("abcdefghijklmnopqrstuvwxyz"));
+
+            // Generate one special character
+            password.Append(GenerateRandomChar(specialChars));
+
+            password.Append(GenerateRandomChar("0123456789"));
+
+            // Generate the remaining random part of the password
+            for (int i = 0; i < length - 4; i++)
+            {
+                password.Append(GenerateRandomChar(alphanumericChars));
+            }
+
+            // Shuffle the characters in the password
+            string shuffledPassword = ShufflePassword(password.ToString());
+
+            return shuffledPassword;
+        }
+
+        private static char GenerateRandomChar(string characters)
+        {
+            return characters[random.Next(characters.Length)];
+        }
+
+        private static string ShufflePassword(string password)
+        {
+            char[] passwordChars = password.ToCharArray();
+
+            for (int i = passwordChars.Length - 1; i > 0; i--)
+            {
+                int j = random.Next(i + 1);
+                (passwordChars[i], passwordChars[j]) = (passwordChars[j], passwordChars[i]);
+            }
+
+            return new string(passwordChars);
+        }
+
+
     }
 }

@@ -174,7 +174,6 @@ C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Instructor\ListLessons.cshtml.g.cs
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Instructor\UploadSuccess.cshtml.g.cs
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Shared\Error.cshtml.g.cs
-C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Shared\_Layout.cshtml.g.cs
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Shared\_LayoutAdmin.cshtml.g.cs
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Shared\_LayoutInstructor.cshtml.g.cs
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Shared\_LayoutStudent.cshtml.g.cs
@@ -211,3 +210,4 @@ C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\staticwebassets\msbuild.buildMultiTargeting.nyanlearnDotNet.props
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\staticwebassets\msbuild.buildTransitive.nyanlearnDotNet.props
 C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\refint\nyanlearnDotNet.dll
+C:\Users\Min Khant Maung\source\repos\nyanlearnDotNet\nyanlearnDotNet\obj\Debug\net5.0\Razor\Views\Shared\_Layout.cshtml.g.cs

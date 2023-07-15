@@ -50,7 +50,6 @@
 <script>
     
     let totalMarks = @Html.Raw(numOfQuizs);
-    console.log(totalMarks)
     let lessonMarks = 0;
 
 
@@ -67,8 +66,12 @@
         let option = e.target.value;
         if(option===answer){
             lessonMarks++;
-
             let percentage = (calculatePercentage(lessonMarks));
+
+
+            console.log(lessonMarks);
+
+            console.log(percentage);
 
             let sections = url.split("=");
 
@@ -79,15 +82,44 @@
             desiredUrl = desiredUrl + "=" + percentage.toString();
 
             btn.href = desiredUrl;
+            e.target.disabled = true;
         }
-        e.target.disabled = true;
+        else
+        {
+            {
+            let percentage = (calculatePercentage(lessonMarks));
+
+
+            console.log(lessonMarks);
+
+            console.log(percentage);
+
+            let sections = url.split("=");
+
+            let desiredSections = sections.slice(0,3);
+
+            let desiredUrl = desiredSections.join("=");
+
+            desiredUrl = desiredUrl + "=" + percentage.toString();
+
+            btn.href = desiredUrl;
+            e.target.disabled = true;
+        }
+        }
+
     }
 
 
     function calculatePercentage(resultMark)
     {
-        let percentage = (resultMark/totalMarks)*100;
-        return percentage;
+        if(resultMark===0)
+        {
+            return 0;
+        }
+        else
+        {
+            return (resultMark/totalMarks)*100;
+        }
     }
 
 
